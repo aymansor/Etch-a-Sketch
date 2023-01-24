@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Etch a Sketch</title>
+</head>
+
+<!-- body is the sketch pad -->
+
+<body>
+  <header>
+    <!-- left buttons -->
+    <div>
+      <button>Share</button>
+      <button>Save Image</button>
+    </div>
+
+    <!-- title -->
+    <div>
+      <h1 id="title">Etch a Sketch</h1>
+    </div>
+
+    <!-- right buttons -->
+    <div>
+      <button>Dark Mode Toggle</button>
+    </div>
+  </header>
+  <main>
+    <!-- grid -->
+    <div id="grid">
+      <div class="grid-square"></div>
+    </div>
+
+    <!-- controls -->
+    <div>
+
+      <!-- left knob -->
+      <div>
+
+      </div>
+
+      <!-- tools -->
+      <div class="tools">
+        <label>
+          <input type="radio" name="tool" value="pencil" checked>
+          Pencil <span class="tool-shortcut">(P)</span>
+        </label>
+        <label>
+          <input type="radio" name="tool" value="eraser">
+          Eraser <span class="tool-shortcut">(E)</span>
+        </label>
+        <label>
+          <input type="radio" name="tool" value="picker">
+          Picker <span class="tool-shortcut">(I)</span>
+        </label>
+        <label>
+          <input type="radio" name="tool" value="rainbow">
+          Rainbow <span class="tool-shortcut">(R)</span>
+        </label>
+      </div>
+
+      <!-- extra options -->
+      <div>
+
+        <!-- toggle grid -->
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+
+        <!-- clear grid -->
+        <button>Clear Grid</button>
+      </div>
+
+      <!-- right knob -->
+      <div>
+
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>
