@@ -6,11 +6,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Etch a Sketch</title>
+  <link rel="stylesheet" href="./css/styles.css">
 </head>
 
 <!-- body is the sketch pad -->
 
-<body>
+<body id="pad">
   <header>
     <!-- left buttons -->
     <div>
@@ -35,11 +36,11 @@
     </div>
 
     <!-- controls -->
-    <div>
+    <div class="controls">
 
       <!-- left knob -->
-      <div>
-
+      <div class="slider">
+        <div class="knob"></div>
       </div>
 
       <!-- tools -->
@@ -68,7 +69,7 @@
         <!-- toggle grid -->
         <label class="switch">
           <input type="checkbox" checked>
-          <span class="slider"></span>
+          <!-- <span class="slider"></span> -->
         </label>
 
         <!-- clear grid -->
@@ -76,9 +77,10 @@
       </div>
 
       <!-- right knob -->
-      <div>
-
+      <div class="slider">
+        <div class="knob"></div>
       </div>
+
     </div>
   </main>
 </body>
