@@ -53,13 +53,13 @@ header {
 #grid {
   display: flex;
   flex-wrap: wrap;
-  height: 75vh;
+  height: 70vh;
   width: 90vw;
   background-color: var(--clr-grid);
   border-radius: var(--pd-1);
   cursor: crosshair;
   z-index: 1;
-  margin-bottom: 2rem;
+  margin: 2rem;
   outline: 1rem solid var(--clr-fg);
   box-shadow: 0px 0px 11px 1px rgba(0, 0, 0, 0.41) inset;
   -webkit-box-shadow: 0px 0px 11px 1px rgba(0, 0, 0, 0.41) inset;
@@ -92,4 +92,51 @@ header {
   content: "";
   position: absolute;
   border-radius: var(--border-radius-round);
+}
+
+/* Buttons */
+.btn {
+  cursor: pointer;
+  color: var(--clr-text);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  font-family: inherit;
+  padding: 1rem;
+  border: 2px solid var(--clr-text);
+  border-radius: var(--border-radius);
+  background: var(--clr-fg);
+  transform-style: preserve-3d;
+  transition: all 175ms cubic-bezier(0, 0, 1, 1);
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--clr-fg);
+  border-radius: inherit;
+  transform: translate3d(0, 0.35em, -1em);
+  transition: all 175ms cubic-bezier(0, 0, 1, 1);
+}
+
+.btn:hover {
+  background: var(--clr-shadow);
+}
+
+.btn:hover::before {
+  transform: translate3d(0, 0.45em, -1em);
+}
+
+.btn:active {
+  transform: translate(0em, 0.45em);
+}
+
+.btn:active::before {
+  transform: translate3d(0, 0, -1em);
+  box-shadow: 0 0 0 2px var(--clr-text), 0 0.25em 0 0 var(--clr-text);
 }
