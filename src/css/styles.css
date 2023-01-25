@@ -228,3 +228,69 @@ input[type="radio"]:checked + span {
   border-radius: 3px;
   display: block;
 }
+
+/* Extra options */
+
+.extra-options {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+}
+
+/* Checkbox styling */
+
+.checkbox input[type="checkbox"] {
+  visibility: hidden;
+  display: none;
+}
+
+.checkbox .toggle {
+  position: relative;
+  display: block;
+  width: 80px;
+  height: 40px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transform: translate3d(0, 0, 0);
+}
+.checkbox .toggle:before {
+  content: "";
+  position: relative;
+  top: 6px;
+  left: 6px;
+  width: 68px;
+  height: 28px;
+  display: block;
+  background: var(--clr-text);
+  box-shadow: 0 0 0 4px var(--clr-shadow), 0 0 8px -2px black inset;
+  border-radius: 16px;
+  transition: background 0.2s ease;
+}
+.checkbox .toggle span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  /* display: block; */
+  background: var(--clr-bg);
+  border-radius: 20px;
+  box-shadow: 0 0 0 2px var(--clr-text), 0 6px 16px var(--clr-shadow);
+  transition: all 0.2s ease;
+}
+
+.checkbox #toggle-grid:checked + .toggle:before {
+  background: var(--clr-grid);
+}
+.checkbox #toggle-grid:checked + .toggle span {
+  background: var(--clr-fg);
+  transform: translateX(40px);
+  transition: all 0.2s cubic-bezier(1.6, 0.8, 0.6, 2.5), background 0.15s ease;
+  box-shadow: 0 0 0 2px var(--clr-text), 0 6px 16px var(--clr-shadow);
+}
+.checkbox #toggle-grid:checked + .toggle span:before {
+  transform: scale(1);
+  opacity: 0;
+  transition: all 0.4s ease;
+}
