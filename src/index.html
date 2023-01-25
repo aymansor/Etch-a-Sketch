@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Etch a Sketch</title>
   <link rel="stylesheet" href="./css/styles.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
 </head>
 
 <!-- body is the sketch pad -->
@@ -15,8 +17,12 @@
   <header>
     <!-- left buttons -->
     <div>
-      <button class="btn">Share</button>
-      <button class="btn">Save Image</button>
+      <button class="btn">
+        <i class="fa-solid fa-share"> Share</i>
+      </button>
+      <button class="btn">
+        <i class="fa-solid fa-download"> Save</i>
+      </button>
     </div>
 
     <!-- title -->
@@ -26,7 +32,9 @@
 
     <!-- right buttons -->
     <div>
-      <button class="btn">Dark Mode Toggle</button>
+      <button class="btn">
+        <i class="fa-solid fa-moon"></i>
+      </button>
     </div>
   </header>
   <main>
@@ -47,18 +55,22 @@
       <div class="tools">
         <label>
           <input type="radio" name="tool" value="pencil" checked>
+          <i class="fa-solid fa-pen"></i>
           Pencil <span class="tool-shortcut">(P)</span>
         </label>
         <label>
           <input type="radio" name="tool" value="eraser">
+          <i class="fa-solid fa-eraser"></i>
           Eraser <span class="tool-shortcut">(E)</span>
         </label>
         <label>
           <input type="radio" name="tool" value="picker">
+          <i class="fa-solid fa-eye-dropper"></i>
           Picker <span class="tool-shortcut">(I)</span>
         </label>
         <label>
           <input type="radio" name="tool" value="rainbow">
+          <i class="fa-solid fa-shuffle"></i>
           Rainbow <span class="tool-shortcut">(R)</span>
         </label>
       </div>
@@ -73,7 +85,9 @@
         </label>
 
         <!-- clear grid -->
-        <button class="btn">Clear Grid</button>
+        <button class="btn">
+          <i class="fa-solid fa-border-none"></i> Clear Grid
+        </button>
       </div>
 
       <!-- right knob -->
