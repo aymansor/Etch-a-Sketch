@@ -2,10 +2,11 @@
 
 :root {
   /* Colors */
-  --clr-bg: #edf2f7;
-  --clr-fg: #1cb0f6;
-  --clr-text: #116e99;
-  --clr-grid: #ffffff;
+  --clr-bg: #e7e5dc;
+  --clr-fg: #d1bba3;
+  --clr-shadow: #b69f89;
+  --clr-text: #4f4949;
+  --clr-grid: #f4f3ee;
 
   /* Fonts */
   --ff-primary: "Dosis", sans-serif;
