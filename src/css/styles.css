@@ -399,3 +399,22 @@ output {
     0 -10.5px 0 -6px var(--clr-shadow) inset,
     0 0 10px 5px rgba(0, 0, 0, 0.35) inset;
 }
+
+/* Color picker styling */
+.clr-picker {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  border: 4px solid var(--clr-text);
+  box-shadow: 0 6px 0 -1px var(--clr-shadow);
+}
+
+[type="color"] {
+  border: 0;
+  padding: 0;
+  width: 200%;
+  height: 200%;
+  cursor: pointer;
+  transform: translate(-25%, -25%);
+}
