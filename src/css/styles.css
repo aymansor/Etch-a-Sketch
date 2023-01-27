@@ -294,3 +294,108 @@ input[type="radio"]:checked + span {
   opacity: 0;
   transition: all 0.4s ease;
 }
+
+/* Slider Styling */
+
+label {
+  color: var(--clr-text);
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--clr-grid);
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+  margin: 1rem 0;
+}
+
+input[type="range"]:hover {
+  opacity: 1;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--clr-text);
+  cursor: pointer;
+  border: 2px solid var(--clr-text);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--clr-text);
+  cursor: pointer;
+  border: 2px solid var(--clr-text);
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 1rem;
+  background: var(--clr-grid);
+  border-radius: 10px;
+  box-shadow: 0 0 0 4px var(--clr-shadow), 0 0 8px -2px black inset;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--clr-fg);
+  box-shadow: 0 0 3px var(--clr-shadow), 0 0 5px var(--clr-shadow);
+  cursor: pointer;
+  transform: translateY(-16%);
+}
+
+input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: 1rem;
+  background: var(--clr-grid);
+  border-radius: 10px;
+  box-shadow: 0 0 0 4px var(--clr-shadow), 0 0 8px -2px black inset;
+}
+
+input[type="range"]::-moz-range-thumb {
+  -webkit-appearance: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--clr-fg);
+  box-shadow: 0 0 3px var(--clr-shadow), 0 0 5px var(--clr-shadow);
+  cursor: pointer;
+  /* transform: translateY(-16%); */
+}
+
+output {
+  display: inline-block;
+  width: 100px;
+  margin-left: 1rem;
+  color: var(--clr-text);
+  text-align: center;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--clr-grid);
+
+  letter-spacing: 8px;
+  border: 2px solid var(--clr-text);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 10px 1px -4px var(--clr-shadow) inset,
+    14px 0 1px -8px var(--clr-shadow) inset,
+    -30px 0 1px -25px var(--clr-shadow) inset,
+    0 -10.5px 0 -6px var(--clr-shadow) inset,
+    0 0 10px 5px rgba(0, 0, 0, 0.35) inset;
+}
