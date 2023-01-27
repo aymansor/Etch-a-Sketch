@@ -83,6 +83,9 @@ header {
 }
 
 .grid-square {
+}
+
+.grid-square-outline {
   outline: 1px solid rgba(49, 63, 78, 0.3);
 }
 

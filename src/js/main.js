@@ -4,6 +4,7 @@
 let grid = document.getElementById("grid");
 let clearGridButton = document.getElementById("clear-grid");
 const colorSelect = document.getElementById("color-select");
+let toggleGrid = document.getElementById("toggle-grid");
 
 // Global Variables
 let gridSize = 16;
@@ -60,6 +61,19 @@ const RemoveGrid = () => {
   gridSquares = []; //clearing the gridSquares variable
 };
 
+// Function to add or remove outline class based on checkbox state
+const toggleOutline = () => {
+  if (toggleGrid.checked) {
+    gridSquares.forEach((square) =>
+      square.classList.add("grid-square-outline")
+    );
+  } else {
+    gridSquares.forEach((square) =>
+      square.classList.remove("grid-square-outline")
+    );
+  }
+};
+
 // Main function
 let main = () => {
   // disable right click inside the grid
@@ -73,6 +87,8 @@ let main = () => {
   colorSelect.addEventListener("input", function () {
     drawColor = this.value;
   });
+  // Add event listener to checkbox
+  toggleGrid.addEventListener("change", toggleOutline);
 };
 
 main();
