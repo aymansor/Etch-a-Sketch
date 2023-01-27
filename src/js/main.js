@@ -149,7 +149,7 @@ function handleKeydown(event) {
   } else if (event.keyCode === 51) {
     // "3" key
     document.getElementById("picker").checked = true;
-  } else if (event.keyCode === 522) {
+  } else if (event.keyCode === 52) {
     // "4" key
     document.getElementById("rainbow").checked = true;
   }
