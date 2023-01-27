@@ -11,7 +11,7 @@ let gridBackgroundColor = window
   .getComputedStyle(document.documentElement)
   .getPropertyValue("--clr-grid");
 let gridSquares = [];
-let drawColor = "#000000";
+let drawColor = colorSelect.value;
 
 const CreateGrid = () => {
   gridSquares = []; //clearing the gridSquares variable
@@ -70,7 +70,7 @@ let main = () => {
 
   // Add a click event listener to the button
   clearGridButton.addEventListener("click", clearGrid);
-  colorSelect.addEventListener("change", function () {
+  colorSelect.addEventListener("input", function () {
     drawColor = this.value;
   });
 };
