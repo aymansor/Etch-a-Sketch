@@ -22,6 +22,8 @@ const CreateGrid = () => {
     square.style.backgroundColor = gridBackgroundColor;
     square.style.width = `${100 / gridSize}%`;
 
+    if (toggleGrid.checked) square.classList.add("grid-square-outline");
+
     // Add mousedown event listener to each square
     square.addEventListener("mousedown", (event) => {
       gridAction(event);
@@ -76,6 +78,9 @@ const toggleOutline = () => {
 
 function onGridChangeRange(value) {
   document.getElementById("grid-size-text").value = `${value}x${value}`;
+  gridSize = Number(value);
+  RemoveGrid();
+  CreateGrid();
 }
 
 // Main function
