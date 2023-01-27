@@ -138,10 +138,28 @@ function onGridChangeRange(value) {
   CreateGrid();
 }
 
+function handleKeydown(event) {
+  if (event.keyCode === 49) {
+    // "1" key
+    document.getElementById("pencil").checked = true;
+  } else if (event.keyCode === 50) {
+    // "2" key
+    document.getElementById("eraser").checked = true;
+  } else if (event.keyCode === 51) {
+    // "3" key
+    document.getElementById("picker").checked = true;
+  } else if (event.keyCode === 522) {
+    // "4" key
+    document.getElementById("rainbow").checked = true;
+  }
+}
+
 // Main function
 let main = () => {
   // disable right click inside the grid
   grid.addEventListener("contextmenu", (e) => e.preventDefault());
+  // handle keydown events
+  document.addEventListener("keydown", handleKeydown);
 
   // create the grid
   CreateGrid();
