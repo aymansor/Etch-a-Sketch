@@ -3,6 +3,7 @@
 // DOM Elements
 let grid = document.getElementById("grid");
 let clearGridButton = document.getElementById("clear-grid");
+const colorSelect = document.getElementById("color-select");
 
 // Global Variables
 let gridSize = 16;
@@ -10,6 +11,7 @@ let gridBackgroundColor = window
   .getComputedStyle(document.documentElement)
   .getPropertyValue("--clr-grid");
 let gridSquares = [];
+let drawColor = "#000000";
 
 const CreateGrid = () => {
   gridSquares = []; //clearing the gridSquares variable
@@ -37,7 +39,7 @@ const CreateGrid = () => {
 let gridAction = (event) => {
   // check if left mouse button is pressed
   if (event.buttons === 1) {
-    event.target.style.backgroundColor = "black";
+    event.target.style.backgroundColor = drawColor;
     // check if left mouse button is held down
   } else if (event.buttons === 2) {
     event.target.style.backgroundColor = gridBackgroundColor;
@@ -68,6 +70,9 @@ let main = () => {
 
   // Add a click event listener to the button
   clearGridButton.addEventListener("click", clearGrid);
+  colorSelect.addEventListener("change", function () {
+    drawColor = this.value;
+  });
 };
 
 main();
