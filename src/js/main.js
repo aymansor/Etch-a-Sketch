@@ -5,6 +5,7 @@ let grid = document.getElementById("grid");
 let clearGridButton = document.getElementById("clear-grid");
 const colorSelect = document.getElementById("color-select");
 let toggleGrid = document.getElementById("toggle-grid");
+const tools = document.getElementsByName("mode");
 
 // Global Variables
 let gridSize = 16;
@@ -42,11 +43,57 @@ const CreateGrid = () => {
 let gridAction = (event) => {
   // check if left mouse button is pressed
   if (event.buttons === 1) {
-    event.target.style.backgroundColor = drawColor;
+    switch (getSelectedTool()) {
+      case "pencil":
+        event.target.style.backgroundColor = drawColor;
+        break;
+      case "eraser":
+        event.target.style.backgroundColor = gridBackgroundColor;
+        break;
+      case "picker":
+        selectColor(event.target);
+        break;
+      case "rainbow":
+        event.target.style.backgroundColor = getRandomColor();
+        break;
+    }
     // check if left mouse button is held down
   } else if (event.buttons === 2) {
     event.target.style.backgroundColor = gridBackgroundColor;
   }
+};
+
+let selectColor = (square) => {
+  drawColor = square.style.backgroundColor;
+  colorSelect.value = rgbToHex(drawColor);
+};
+
+let getSelectedTool = () => {
+  for (let i = 0; i < tools.length; i++) {
+    if (tools[i].checked) {
+      return tools[i].value;
+    }
+  }
+};
+
+let getRandomColor = () => {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
+const rgbToHex = (rgb) => {
+  return (
+    "#" +
+    rgb
+      .slice(4, -1)
+      .split(",")
+      .map((x) => (+x).toString(16).padStart(2, 0))
+      .join("")
+  );
 };
 
 const clearGrid = () => {
