@@ -56,14 +56,6 @@
           <input type="range" min="4" max="64" value="16" id="grid-size-range" step="1"
             oninput="onGridChangeRange(this.value)">
         </div>
-        <!-- TODO: Move to external javascript file  -->
-        <script>
-          function onGridChangeRange(value) {
-            const outputLabel = document.getElementById("grid-size-text");
-            outputLabel.innerHTML = `${value}x${value}`;
-          }
-
-        </script>
       </div>
 
       <!-- tools -->

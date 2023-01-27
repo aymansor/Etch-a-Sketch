@@ -74,6 +74,10 @@ const toggleOutline = () => {
   }
 };
 
+function onGridChangeRange(value) {
+  document.getElementById("grid-size-text").value = `${value}x${value}`;
+}
+
 // Main function
 let main = () => {
   // disable right click inside the grid
