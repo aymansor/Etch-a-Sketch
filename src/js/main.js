@@ -6,6 +6,7 @@ let clearGridButton = document.getElementById("clear-grid");
 const colorSelect = document.getElementById("color-select");
 let toggleGrid = document.getElementById("toggle-grid");
 const tools = document.getElementsByName("mode");
+const saveBtn = document.getElementById("save-btn");
 
 // Global Variables
 let gridSize = 16;
@@ -154,12 +155,37 @@ function handleKeydown(event) {
   }
 }
 
+let saveImage = () => {
+  domtoimage
+    .toPng(grid, {
+      style: {
+        margin: "0",
+        padding: "0",
+        outline: "none",
+        "box-shadow": "none",
+        "border-radius": "none",
+      },
+    })
+    .then(function (dataUrl) {
+      // Create a new anchor element
+      var a = document.createElement("a");
+
+      // Set the href and download attributes for the anchor element
+      a.href = dataUrl;
+      a.download = "screenshot.png";
+
+      // Click the anchor element to trigger the download
+      a.click();
+    });
+};
+
 // Main function
 let main = () => {
   // disable right click inside the grid
   grid.addEventListener("contextmenu", (e) => e.preventDefault());
   // handle keydown events
   document.addEventListener("keydown", handleKeydown);
+  saveBtn.addEventListener("click", saveImage);
 
   // create the grid
   CreateGrid();
