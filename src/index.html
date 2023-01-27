@@ -46,9 +46,24 @@
     <!-- controls -->
     <div class="controls">
 
-      <!-- left knob -->
-      <div class="slider">
-        <div class="knob"></div>
+      <!-- Grid Size slider container -->
+      <div>
+        <div class="grid-size-label-container">
+          <label for="grid-size-range">Grid Size:</label>
+          <output for="grid-size-range" id="grid-size-text">16x16</output>
+        </div>
+        <div>
+          <input type="range" min="4" max="64" value="16" id="grid-size-range" step="1"
+            oninput="onGridChangeRange(this.value)">
+        </div>
+        <!-- TODO: Move to external javascript file  -->
+        <script>
+          function onGridChangeRange(value) {
+            const outputLabel = document.getElementById("grid-size-text");
+            outputLabel.innerHTML = `${value}x${value}`;
+          }
+
+        </script>
       </div>
 
       <!-- tools -->
