@@ -66,6 +66,14 @@ let gridAction = (event) => {
 let selectColor = (square) => {
   drawColor = square.style.backgroundColor;
   colorSelect.value = rgbToHex(drawColor);
+  tools.forEach((tool) => {
+    if (tool.value === "pencil") {
+      tool.checked = true;
+    }
+    if (tool.value === "picker") {
+      tool.checked = false;
+    }
+  });
 };
 
 let getSelectedTool = () => {
