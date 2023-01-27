@@ -1,13 +1,18 @@
 "use strict";
 
+// DOM Elements
 let grid = document.getElementById("grid");
+let clearGridButton = document.getElementById("clear-grid");
 
+// Global Variables
 let gridSize = 16;
 let gridBackgroundColor = window
   .getComputedStyle(document.documentElement)
   .getPropertyValue("--clr-grid");
+let gridSquares = [];
 
 const CreateGrid = () => {
+  gridSquares = []; //clearing the gridSquares variable
   for (let i = 0; i < gridSize * gridSize; i++) {
     let square = document.createElement("div");
     square.classList.add("grid-square");
@@ -24,6 +29,7 @@ const CreateGrid = () => {
       gridAction(event);
     });
 
+    gridSquares.push(square);
     grid.appendChild(square);
   }
 };
@@ -38,12 +44,30 @@ let gridAction = (event) => {
   }
 };
 
+const clearGrid = () => {
+  // Set the background color of all grid squares to the gridBackgroundColor variable
+  gridSquares.forEach((element) => {
+    element.style.backgroundColor = gridBackgroundColor;
+  });
+};
+
+const RemoveGrid = () => {
+  gridSquares.forEach((item) => {
+    item.remove();
+  });
+  gridSquares = []; //clearing the gridSquares variable
+};
+
+// Main function
 let main = () => {
   // disable right click inside the grid
   grid.addEventListener("contextmenu", (e) => e.preventDefault());
 
   // create the grid
   CreateGrid();
+
+  // Add a click event listener to the button
+  clearGridButton.addEventListener("click", clearGrid);
 };
 
 main();
