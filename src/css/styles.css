@@ -50,6 +50,22 @@ header {
   width: 90vw;
 }
 
+#left-actions {
+  flex: 1;
+}
+
+#page-title {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+#right-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+}
+
 #title {
   letter-spacing: 8px;
   border: 2px solid var(--clr-text);
