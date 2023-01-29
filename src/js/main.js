@@ -11,6 +11,9 @@ const tools = document.getElementsByName("mode");
 const saveBtn = document.getElementById("save-btn");
 const gridRange = document.getElementById("grid-size-range");
 
+const toggleOutlineChecked =
+  localStorage.getItem("toggleOutlineChecked") === "true";
+
 // Global Variables
 let gridSize = 16;
 let gridBackgroundColor = window
@@ -125,6 +128,7 @@ const RemoveGrid = () => {
 
 // Function to add or remove outline class based on checkbox state
 const toggleOutline = () => {
+  localStorage.setItem("toggleOutlineChecked", toggleGrid.checked);
   if (toggleGrid.checked) {
     gridSquares.forEach((square) =>
       square.classList.add("grid-square-outline")
@@ -204,6 +208,13 @@ const main = () => {
   colorSelect.addEventListener("input", function () {
     drawColor = this.value;
   });
+
+  // when the page load check if the toggleGrid was enabled before
+  window.addEventListener("load", () => {
+    toggleGrid.checked = toggleOutlineChecked;
+    toggleOutline();
+  });
+
   // Add event listener to checkbox
   toggleGrid.addEventListener("change", toggleOutline);
 
