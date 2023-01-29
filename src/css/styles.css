@@ -256,7 +256,7 @@ input[type="radio"]:checked + span {
   opacity: 0.75;
   width: fit-content;
   background-color: var(--clr-text);
-  color: #fff;
+  color: var(--clr-bg);
   padding: 4px;
   border-radius: 3px;
   display: block;
