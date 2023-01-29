@@ -64,8 +64,13 @@ const gridAction = (event) => {
         event.target.style.backgroundColor = getRandomColor();
         break;
     }
-    // check if left mouse button is held down
-  } else if (event.buttons === 2) {
+  }
+  // check if middle mouse is clicked
+  else if (event.button === 1) {
+    selectColor(event.target);
+  }
+  // check if left mouse button is held down
+  else if (event.buttons === 2) {
     event.target.style.backgroundColor = gridBackgroundColor;
   }
 };
