@@ -149,6 +149,7 @@ header {
   text-transform: uppercase;
   font-family: inherit;
   padding: 1rem;
+  margin: 0 0.25rem;
   border: 2px solid var(--clr-text);
   border-radius: var(--border-radius);
   background: var(--clr-fg);
