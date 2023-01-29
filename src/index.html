@@ -45,15 +45,39 @@
     </div>
   </header>
   <main>
-    <div>
-      <button class="btn" id="perform-undo-btn">
-        <i class="fa-solid fa-rotate-left"></i>
-        <span class="undo-redo-steps">0</span>
-      </button>
-      <button class="btn" id="perform-redo-btn">
-        <i class="fa-solid fa-rotate-right"></i>
-        <span class="undo-redo-steps">0</span>
-      </button>
+    <div class="top-controls">
+      <div>
+        <button class="btn" id="perform-undo-btn">
+          <i class="fa-solid fa-rotate-left"></i>
+          <span class="undo-redo-steps">0</span>
+        </button>
+        <button class="btn" id="perform-redo-btn">
+          <i class="fa-solid fa-rotate-right"></i>
+          <span class="undo-redo-steps">0</span>
+        </button>
+      </div>
+      <div id="settings-container">
+        <button class="btn" id="toggle-settings">
+          <i class="fa-solid fa-gear"></i>
+        </button>
+        <div id="settings-popup">
+          <div>
+            Settings
+            <hr>
+          </div>
+          <!-- toggle grid -->
+          <div class="setting-option">
+            <div class="setting-option-info">
+              <span class="setting-option-title">Toggle Grid</span>
+              <p class="setting-option-description">Turns on/off display of grid outlines.</p>
+            </div>
+            <div class="checkbox">
+              <input type="checkbox" class="checkbox-input" id="toggle-grid" />
+              <label for="toggle-grid" class="toggle"><span></span></label>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- grid -->
     <div id="grid">
@@ -96,11 +120,7 @@
       <!-- extra options -->
       <div class="extra-options">
 
-        <!-- toggle grid -->
-        <div class="checkbox">
-          <input type="checkbox" id="toggle-grid" />
-          <label for="toggle-grid" class="toggle"><span></span></label>
-        </div>
+
 
         <!-- clear grid -->
         <button class="btn" id="clear-grid">

@@ -10,6 +10,8 @@ const toggleGrid = document.getElementById("toggle-grid");
 const tools = document.getElementsByName("mode");
 const saveBtn = document.getElementById("save-btn");
 const gridRange = document.getElementById("grid-size-range");
+const toggleBtn = document.querySelector("#toggle-settings");
+const settingsPopup = document.querySelector("#settings-popup");
 
 const toggleOutlineChecked =
   localStorage.getItem("toggleOutlineChecked") === "true";
@@ -235,6 +237,10 @@ const main = () => {
 
   gridRange.addEventListener("input", (event) => {
     onGridChangeRange(event.target.value);
+  });
+
+  toggleBtn.addEventListener("click", function () {
+    settingsPopup.classList.toggle("show");
   });
 };
 
