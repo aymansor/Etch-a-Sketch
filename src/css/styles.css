@@ -146,7 +146,7 @@ header {
   transition: all 175ms ease-in-out;
 }
 
-.grid-square:hover {
+.grid-square .single:hover {
   opacity: 0.5;
 }
 
