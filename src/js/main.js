@@ -9,6 +9,7 @@ const colorSelect = document.getElementById("color-select");
 const toggleGrid = document.getElementById("toggle-grid");
 const tools = document.getElementsByName("mode");
 const saveBtn = document.getElementById("save-btn");
+const gridRange = document.getElementById("grid-size-range");
 
 // Global Variables
 let gridSize = 16;
@@ -203,6 +204,10 @@ const main = () => {
   });
   // Add event listener to checkbox
   toggleGrid.addEventListener("change", toggleOutline);
+
+  gridRange.addEventListener("input", (event) => {
+    onGridChangeRange(event.target.value);
+  });
 };
 
 main();
