@@ -109,6 +109,7 @@ const rgbToHex = (rgb) => {
 };
 
 const clearGrid = () => {
+  State.clearHistory();
   // Set the background color of all grid squares to the gridBackgroundColor variable
   gridSquares.forEach((element) => {
     element.style.backgroundColor = gridBackgroundColor;
