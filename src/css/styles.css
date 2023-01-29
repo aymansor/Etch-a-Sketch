@@ -107,6 +107,15 @@ header {
 }
 
 .grid-square {
+  transition: all 175ms ease-in-out;
+}
+
+.grid-square:hover {
+  opacity: 0.5;
+}
+
+.grid-square.hover {
+  opacity: 0.5;
 }
 
 .grid-square-outline {

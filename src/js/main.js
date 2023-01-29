@@ -48,6 +48,9 @@ const CreateGrid = () => {
 };
 
 const gridAction = (event) => {
+  // Enable trailing effect when hovering over the grid.
+  mouseTrail(event);
+
   // check if left mouse button is pressed
   if (event.buttons === 1) {
     switch (getSelectedTool()) {
@@ -73,6 +76,13 @@ const gridAction = (event) => {
   else if (event.buttons === 2) {
     event.target.style.backgroundColor = gridBackgroundColor;
   }
+};
+
+const mouseTrail = (event) => {
+  event.target.classList.add("hover");
+  event.target.addEventListener("transitionend", () =>
+    event.target.classList.remove("hover")
+  );
 };
 
 const selectColor = (square) => {
