@@ -1,10 +1,49 @@
 import * as Main from "./main.js";
 
-// [undo/redo stuff]
+const performUndoBtn = document.querySelector("#perform-undo-btn");
+const performRedoBtn = document.querySelector("#perform-redo-btn");
+const undoRedoStepsLabels = document.querySelectorAll(".undo-redo-steps");
+
 let undoStack = [];
 let undoStep = 0;
 let redoStack = [];
 let redoStep = 0;
+
+const updateUndoRedoStepLabel = (index, step) => {
+  undoRedoStepsLabels[index].textContent = step;
+};
+
+const incrementUndoStep = () => {
+  undoStep++;
+  updateUndoRedoStepLabel(0, undoStep);
+};
+
+const decrementUndoStep = () => {
+  undoStep--;
+  updateUndoRedoStepLabel(0, undoStep);
+};
+
+const resetUndoStep = () => {
+  undoStack = [];
+  undoStep = 0;
+  updateUndoRedoStepLabel(0, undoStep);
+};
+
+const incrementRedoStep = () => {
+  redoStep++;
+  updateUndoRedoStepLabel(1, redoStep);
+};
+
+const decrementRedoStep = () => {
+  redoStep--;
+  updateUndoRedoStepLabel(1, redoStep);
+};
+
+const resetRedoStep = () => {
+  redoStack = [];
+  redoStep = 0;
+  updateUndoRedoStepLabel(1, redoStep);
+};
 
 const getCurrentState = () => {
   return Main.gridSquares.map((square) => square.style.backgroundColor);
@@ -13,14 +52,12 @@ const getCurrentState = () => {
 // Save current state
 const saveState = () => {
   undoStack.push(getCurrentState());
-  undoStep++;
+  incrementUndoStep();
 };
 
 const clearHistory = () => {
-  undoStack = [];
-  undoStep = 0;
-  redoStack = [];
-  redoStep = 0;
+  resetUndoStep();
+  resetRedoStep();
 };
 
 const performUndo = () => {
@@ -28,7 +65,7 @@ const performUndo = () => {
   if (undoStep > 0) {
     // Save the current state of the grid to the redoStack
     redoStack.push(getCurrentState());
-    redoStep++;
+    incrementRedoStep();
 
     // Loop over each square in the grid and update its background color
     // to the value in the undoStack at the current undoStep
@@ -36,7 +73,7 @@ const performUndo = () => {
       square.style.backgroundColor = undoStack[undoStep - 1][index];
     });
     undoStack.pop();
-    undoStep--;
+    decrementUndoStep();
   }
 };
 
@@ -52,8 +89,11 @@ const performRedo = () => {
       square.style.backgroundColor = redoStack[redoStep - 1][index];
     });
     redoStack.pop();
-    redoStep--;
+    decrementRedoStep();
   }
 };
+
+performUndoBtn.addEventListener("click", performUndo);
+performRedoBtn.addEventListener("click", performRedo);
 
 export { saveState, performUndo, performRedo, clearHistory };

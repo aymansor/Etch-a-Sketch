@@ -13,10 +13,10 @@
   --ff-secondary: "Dosis", sans-serif;
 
   /* Font Sizes */
-  --fs-s: 1rem;
-  --fs-m: 1.2rem;
+  --fs-s: 0.75rem;
+  --fs-m: 1rem;
   --fs-l: 2rem;
-  --fs-body: var(--fs-s);
+  --fs-body: var(--fs-m);
 
   /* Font wights */
   --fw-regular: 400;
@@ -187,6 +187,21 @@ header {
 .btn:active::before {
   transform: translate3d(0, 0, -1em);
   box-shadow: 0 0 0 2px var(--clr-text), 0 0.25em 0 0 var(--clr-text);
+}
+
+#perform-undo-btn,
+#perform-redo-btn {
+  position: relative;
+  width: 65px;
+  aspect-ratio: 1/1;
+}
+
+.undo-redo-steps {
+  position: absolute;
+  font-size: var(--fs-s);
+  opacity: 0.5;
+  right: 15%;
+  bottom: 5%;
 }
 
 /* =============================================
