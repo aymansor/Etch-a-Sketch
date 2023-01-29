@@ -1,5 +1,7 @@
 "use strict";
 
+import * as State from "./grid-state.js";
+
 // DOM Elements
 const grid = document.getElementById("grid");
 const clearGridButton = document.getElementById("clear-grid");
@@ -13,7 +15,8 @@ let gridSize = 16;
 let gridBackgroundColor = window
   .getComputedStyle(document.documentElement)
   .getPropertyValue("--clr-grid");
-let gridSquares = [];
+// TODO: move the grid logic out of main?
+export let gridSquares = [];
 let drawColor = colorSelect.value;
 
 const CreateGrid = () => {
@@ -27,7 +30,11 @@ const CreateGrid = () => {
     if (toggleGrid.checked) square.classList.add("grid-square-outline");
 
     // Add mousedown event listener to each square
-    square.addEventListener("mousedown", gridAction);
+    square.addEventListener("mousedown", (event) => {
+      // Saves the current state before preforming any actions
+      State.saveState();
+      gridAction(event);
+    });
     // Add mouseover event listener to each square
     square.addEventListener("mouseover", gridAction);
 
@@ -147,6 +154,10 @@ const handleKeydown = (event) => {
   } else if (event.keyCode === 52) {
     // "4" key
     document.getElementById("rainbow").checked = true;
+  } else if (event.ctrlKey && event.shiftKey && event.code === "KeyZ") {
+    State.performRedo();
+  } else if (event.ctrlKey && event.code === "KeyZ") {
+    State.performUndo();
   }
 };
 
