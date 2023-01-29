@@ -7,12 +7,17 @@ const grid = document.getElementById("grid");
 const clearGridButton = document.getElementById("clear-grid");
 const colorSelect = document.getElementById("color-select");
 const toggleGrid = document.getElementById("toggle-grid");
+const mouseTrailToggle = document.getElementById("mouse-trail-toggle");
 const tools = document.getElementsByName("mode");
 const saveBtn = document.getElementById("save-btn");
 const gridRange = document.getElementById("grid-size-range");
+const toggleBtn = document.querySelector("#toggle-settings");
+const settingsPopup = document.querySelector("#settings-popup");
 
 const toggleOutlineChecked =
   localStorage.getItem("toggleOutlineChecked") === "true";
+const toggleMouseTrailChecked =
+  localStorage.getItem("toggleMouseTrailChecked") === "true";
 
 // Global Variables
 let gridSize = 16;
@@ -49,7 +54,7 @@ const CreateGrid = () => {
 
 const gridAction = (event) => {
   // Enable trailing effect when hovering over the grid.
-  mouseTrail(event);
+  // mouseTrail(event);
 
   // check if left mouse button is pressed
   if (event.buttons === 1) {
@@ -78,8 +83,23 @@ const gridAction = (event) => {
   }
 };
 
-const mouseTrail = (event) => {
+const mouseTrail = () => {
+  localStorage.setItem("toggleMouseTrailChecked", mouseTrailToggle.checked);
+  if (mouseTrailToggle.checked) {
+    gridSquares.forEach((element) => {
+      element.addEventListener("mouseover", mouseTrailEffect);
+    });
+  } else {
+    gridSquares.forEach((element) => {
+      element.removeEventListener("mouseover", mouseTrailEffect);
+      element.classList.remove("single");
+    });
+  }
+};
+
+const mouseTrailEffect = (event) => {
   event.target.classList.add("hover");
+  event.target.classList.add("single");
   event.target.addEventListener("transitionend", () =>
     event.target.classList.remove("hover")
   );
@@ -228,13 +248,21 @@ const main = () => {
   window.addEventListener("load", () => {
     toggleGrid.checked = toggleOutlineChecked;
     toggleOutline();
+
+    mouseTrailToggle.checked = toggleMouseTrailChecked;
+    mouseTrail();
   });
 
   // Add event listener to checkbox
   toggleGrid.addEventListener("change", toggleOutline);
+  mouseTrailToggle.addEventListener("change", mouseTrail);
 
   gridRange.addEventListener("input", (event) => {
     onGridChangeRange(event.target.value);
+  });
+
+  toggleBtn.addEventListener("click", function () {
+    settingsPopup.classList.toggle("show");
   });
 };
 

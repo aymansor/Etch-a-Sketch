@@ -15,7 +15,7 @@
   /* Font Sizes */
   --fs-s: 0.75rem;
   --fs-m: 1rem;
-  --fs-l: 2rem;
+  --fs-l: 1.5rem;
   --fs-body: var(--fs-m);
 
   /* Font wights */
@@ -49,6 +49,60 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.top-controls {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.settings-heading {
+  font-size: var(--fs-l);
+  font-weight: var(--fw-bold);
+  letter-spacing: 2px;
+}
+
+.setting-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2rem 0;
+}
+
+.setting-option-title {
+  font-weight: var(--fw-bold);
+  letter-spacing: 2px;
+}
+
+.setting-option-description {
+  opacity: 0.8;
+  font-size: var(--fs-m);
+  margin: 0.25rem 0;
+}
+
+hr {
+  height: 2px;
+  background-color: var(--clr-text);
+  border: none;
+}
+
+#settings-popup {
+  display: none;
+  position: absolute;
+  top: 860%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--clr-fg);
+  border-radius: var(--border-radius);
+  padding: var(--pd-2);
+  border: 4px solid var(--clr-shadow);
+  width: 700px;
+  aspect-ratio: 1/1;
+}
+
+#settings-popup.show {
+  display: block;
 }
 
 header {
@@ -110,7 +164,7 @@ header {
   transition: all 175ms ease-in-out;
 }
 
-.grid-square:hover {
+.grid-square .single:hover {
   opacity: 0.5;
 }
 
@@ -337,16 +391,16 @@ input[type="radio"]:checked + span {
   transition: all 0.2s ease;
 }
 
-.checkbox #toggle-grid:checked + .toggle:before {
+.checkbox .checkbox-input:checked + .toggle:before {
   background: var(--clr-grid);
 }
-.checkbox #toggle-grid:checked + .toggle span {
+.checkbox .checkbox-input:checked + .toggle span {
   background: var(--clr-fg);
   transform: translateX(40px);
   transition: all 0.2s cubic-bezier(1.6, 0.8, 0.6, 2.5), background 0.15s ease;
   box-shadow: 0 0 0 2px var(--clr-text), 0 6px 16px var(--clr-shadow);
 }
-.checkbox #toggle-grid:checked + .toggle span:before {
+.checkbox .checkbox-input:checked + .toggle span:before {
   transform: scale(1);
   opacity: 0;
   transition: all 0.4s ease;
