@@ -136,6 +136,7 @@ const toggleOutline = () => {
 };
 
 const onGridChangeRange = (value) => {
+  State.clearHistory();
   document.getElementById("grid-size-text").value = `${value}x${value}`;
   gridSize = Number(value);
   RemoveGrid();

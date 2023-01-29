@@ -16,6 +16,13 @@ const saveState = () => {
   undoStep++;
 };
 
+const clearHistory = () => {
+  undoStack = [];
+  undoStep = 0;
+  redoStack = [];
+  redoStep = 0;
+};
+
 const performUndo = () => {
   // Check if there is at least one step to undo
   if (undoStep > 0) {
@@ -49,4 +56,4 @@ const performRedo = () => {
   }
 };
 
-export { saveState, performUndo, performRedo };
+export { saveState, performUndo, performRedo, clearHistory };
