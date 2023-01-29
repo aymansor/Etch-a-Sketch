@@ -32,6 +32,14 @@
   --pd-3: 3rem;
 }
 
+.dark-mode {
+  --clr-bg: #2d2c2c;
+  --clr-fg: #3b3a3a;
+  --clr-shadow: #4d4c4c;
+  --clr-text: #f9f9f9;
+  --clr-grid: #262626;
+}
+
 #pad {
   font-family: var(--ff-primary);
   color: var(--clr-text);
