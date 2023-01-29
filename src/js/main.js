@@ -1,10 +1,10 @@
 "use strict";
 
 // DOM Elements
-let grid = document.getElementById("grid");
-let clearGridButton = document.getElementById("clear-grid");
+const grid = document.getElementById("grid");
+const clearGridButton = document.getElementById("clear-grid");
 const colorSelect = document.getElementById("color-select");
-let toggleGrid = document.getElementById("toggle-grid");
+const toggleGrid = document.getElementById("toggle-grid");
 const tools = document.getElementsByName("mode");
 const saveBtn = document.getElementById("save-btn");
 
@@ -27,21 +27,16 @@ const CreateGrid = () => {
     if (toggleGrid.checked) square.classList.add("grid-square-outline");
 
     // Add mousedown event listener to each square
-    square.addEventListener("mousedown", (event) => {
-      gridAction(event);
-    });
-
+    square.addEventListener("mousedown", gridAction);
     // Add mouseover event listener to each square
-    square.addEventListener("mouseover", (event) => {
-      gridAction(event);
-    });
+    square.addEventListener("mouseover", gridAction);
 
     gridSquares.push(square);
     grid.appendChild(square);
   }
 };
 
-let gridAction = (event) => {
+const gridAction = (event) => {
   // check if left mouse button is pressed
   if (event.buttons === 1) {
     switch (getSelectedTool()) {
@@ -64,7 +59,7 @@ let gridAction = (event) => {
   }
 };
 
-let selectColor = (square) => {
+const selectColor = (square) => {
   drawColor = square.style.backgroundColor;
   colorSelect.value = rgbToHex(drawColor);
   tools.forEach((tool) => {
@@ -77,7 +72,7 @@ let selectColor = (square) => {
   });
 };
 
-let getSelectedTool = () => {
+const getSelectedTool = () => {
   for (let i = 0; i < tools.length; i++) {
     if (tools[i].checked) {
       return tools[i].value;
@@ -85,7 +80,7 @@ let getSelectedTool = () => {
   }
 };
 
-let getRandomColor = () => {
+const getRandomColor = () => {
   const letters = "0123456789ABCDEF";
   let color = "#";
   for (let i = 0; i < 6; i++) {
@@ -132,14 +127,14 @@ const toggleOutline = () => {
   }
 };
 
-function onGridChangeRange(value) {
+const onGridChangeRange = (value) => {
   document.getElementById("grid-size-text").value = `${value}x${value}`;
   gridSize = Number(value);
   RemoveGrid();
   CreateGrid();
-}
+};
 
-function handleKeydown(event) {
+const handleKeydown = (event) => {
   if (event.keyCode === 49) {
     // "1" key
     document.getElementById("pencil").checked = true;
@@ -153,9 +148,9 @@ function handleKeydown(event) {
     // "4" key
     document.getElementById("rainbow").checked = true;
   }
-}
+};
 
-let saveImage = () => {
+const saveImage = () => {
   domtoimage
     .toPng(grid, {
       style: {
@@ -168,7 +163,7 @@ let saveImage = () => {
     })
     .then(function (dataUrl) {
       // Create a new anchor element
-      var a = document.createElement("a");
+      const a = document.createElement("a");
 
       // Set the href and download attributes for the anchor element
       a.href = dataUrl;
@@ -180,7 +175,7 @@ let saveImage = () => {
 };
 
 // Main function
-let main = () => {
+const main = () => {
   // disable right click inside the grid
   grid.addEventListener("contextmenu", (e) => e.preventDefault());
   // handle keydown events
