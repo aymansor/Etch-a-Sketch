@@ -94,16 +94,33 @@
 
   <main>
     <div class="grid-container">
-
-      <!-- TODO: add color swatches here, or just remove top-toolbar -->
-      <div class="top-toolbar">
-        <div>
-
-        </div>
-      </div>
-
       <!-- grid -->
       <div id="grid">
+      </div>
+
+      <div class="left-toolbar">
+        <div id="swatch-colors-container">
+        </div>
+
+        <div class="color-swatch-options">
+          <span id="selected-swatch-name"></span>
+          <div class="swatch-arrows">
+            <button class="swatch-arrow" id="swatch-left-arrow">
+              <i class="fa-solid fa-caret-left"></i>
+            </button>
+            <button class="swatch-arrow" id="swatch-right-arrow">
+              <i class="fa-solid fa-caret-right"></i>
+            </button>
+          </div>
+
+        </div>
+
+        <div class="clr-picker-container">
+          <label for="color"> Color </label>
+          <div class="clr-picker">
+            <input type="color" id="color-select" name="color">
+          </div>
+        </div>
       </div>
 
       <div class="right-toolbar">
@@ -125,13 +142,6 @@
             <input type="radio" name="mode" id="rainbow" value="rainbow" />
             <span><i class="fa-solid fa-shuffle"></i></span>
           </label>
-        </div>
-
-        <div class="clr-picker-container">
-          <label for="color"> Color </label>
-          <div class="clr-picker">
-            <input type="color" id="color-select" name="color">
-          </div>
         </div>
       </div>
 

@@ -253,12 +253,52 @@ header {
   padding: 1rem;
 }
 
-.top-toolbar {
-  position: absolute;
-  bottom: 105%;
+#selected-swatch-name {
+  text-align: center;
+  width: 100px;
+  text-transform: uppercase;
+}
+
+.swatch-arrow {
+  border: 0;
+  color: var(--clr-text);
+  background: var(--clr-fg);
+  border-radius: var(--border-radius-round);
+  width: 25px;
+  aspect-ratio: 1/1;
+  margin: 0 0.25rem;
+}
+
+.color-swatch-options {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.left-toolbar {
+  position: absolute;
+  top: 0;
+  right: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: space-between;
-  width: 100%;
+  height: var(--grid-size);
+}
+
+#swatch-colors-container {
+  height: 100%;
+}
+
+.swatch-color {
+  aspect-ratio: 1/1;
+  width: 45px;
+  background-color: pink;
+  border-radius: var(--border-radius);
+  border: 4px solid var(--clr-text);
+  box-shadow: 0 6px 0 -1px var(--clr-shadow);
+  margin: 1rem 0;
 }
 
 .bottom-toolbar {
@@ -521,6 +561,10 @@ output {
 }
 
 /* Color picker styling */
+.clr-picker-container {
+  margin: 1rem 0;
+}
+
 .clr-picker {
   width: 64px;
   height: 64px;
