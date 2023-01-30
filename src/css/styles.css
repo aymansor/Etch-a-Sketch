@@ -86,7 +86,7 @@ hr {
 #settings-popup {
   display: none;
   position: absolute;
-  top: 860%;
+  top: 494%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: var(--clr-fg);
@@ -95,6 +95,7 @@ hr {
   border: 4px solid var(--clr-shadow);
   width: 700px;
   aspect-ratio: 1/1;
+  z-index: 3;
 }
 
 #settings-popup.show {
@@ -102,6 +103,7 @@ hr {
 }
 
 header {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
