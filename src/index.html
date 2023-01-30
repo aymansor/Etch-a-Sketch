@@ -44,112 +44,114 @@
       </button>
     </div>
   </header>
+
   <main>
-    <div class="top-controls">
-      <div>
-        <button class="btn" id="perform-undo-btn">
-          <i class="fa-solid fa-rotate-left"></i>
-          <span class="undo-redo-steps">0</span>
-        </button>
-        <button class="btn" id="perform-redo-btn">
-          <i class="fa-solid fa-rotate-right"></i>
-          <span class="undo-redo-steps">0</span>
-        </button>
-      </div>
-      <div id="settings-container">
-        <button class="btn" id="toggle-settings">
-          <i class="fa-solid fa-gear"></i>
-        </button>
-        <div id="settings-popup">
-          <div>
-            <span class="settings-heading">Settings</span>
-            <hr>
-          </div>
-          <!-- toggle grid -->
-          <div class="setting-option">
-            <div class="setting-option-info">
-              <span class="setting-option-title">
-                <i class="fa-solid fa-table-cells"></i> Toggle Grid</span>
-              <p class="setting-option-description">Turns on/off display of grid outlines.</p>
-            </div>
-            <div class="checkbox">
-              <input type="checkbox" class="checkbox-input" id="toggle-grid" />
-              <label for="toggle-grid" class="toggle"><span></span></label>
-            </div>
-          </div>
-          <!-- Toggle mouse trail -->
-          <div class="setting-option">
-            <div class="setting-option-info">
-              <span class="setting-option-title">
-                <i class="fa-solid fa-wave-square"></i> Toggle Trail</span>
-              <p class="setting-option-description">Turns on/off trailing effect when hovering over
-                the grid.</p>
-            </div>
-            <div class="checkbox">
-              <input type="checkbox" class="checkbox-input" id="mouse-trail-toggle" />
-              <label for="mouse-trail-toggle" class="toggle"><span></span></label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- grid -->
-    <div id="grid">
-    </div>
+    <div class="grid-container">
 
-    <!-- controls -->
-    <div class="controls">
-
-      <!-- Grid Size slider container -->
-      <div>
-        <div class="grid-size-label-container">
-          <label for="grid-size-range">Grid Size:</label>
-          <output for="grid-size-range" id="grid-size-text">16x16</output>
-        </div>
+      <div class="top-toolbar">
         <div>
-          <input type="range" min="4" max="64" value="16" id="grid-size-range" step="1">
+          <button class="btn" id="perform-undo-btn">
+            <i class="fa-solid fa-rotate-left"></i>
+            <span class="undo-redo-steps">0</span>
+          </button>
+          <button class="btn" id="perform-redo-btn">
+            <i class="fa-solid fa-rotate-right"></i>
+            <span class="undo-redo-steps">0</span>
+          </button>
+        </div>
+        <div id="settings-container">
+          <button class="btn" id="toggle-settings">
+            <i class="fa-solid fa-gear"></i>
+          </button>
+          <div id="settings-popup">
+            <div>
+              <span class="settings-heading">Settings</span>
+              <hr>
+            </div>
+            <!-- toggle grid -->
+            <div class="setting-option">
+              <div class="setting-option-info">
+                <span class="setting-option-title">
+                  <i class="fa-solid fa-table-cells"></i> Toggle Grid</span>
+                <p class="setting-option-description">Turns on/off display of grid outlines.</p>
+              </div>
+              <div class="checkbox">
+                <input type="checkbox" class="checkbox-input" id="toggle-grid" />
+                <label for="toggle-grid" class="toggle"><span></span></label>
+              </div>
+            </div>
+            <!-- Toggle mouse trail -->
+            <div class="setting-option">
+              <div class="setting-option-info">
+                <span class="setting-option-title">
+                  <i class="fa-solid fa-wave-square"></i> Toggle Trail</span>
+                <p class="setting-option-description">Turns on/off trailing effect when hovering
+                  over
+                  the grid.</p>
+              </div>
+              <div class="checkbox">
+                <input type="checkbox" class="checkbox-input" id="mouse-trail-toggle" />
+                <label for="mouse-trail-toggle" class="toggle"><span></span></label>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- tools -->
-      <div id="tools">
-        <label for="pencil">
-          <input type="radio" name="mode" id="pencil" value="pencil" checked />
-          <span><i class="fa-solid fa-pen"></i></span>
-        </label>
-        <label for="eraser">
-          <input type="radio" name="mode" id="eraser" value="eraser" />
-          <span><i class="fa-solid fa-eraser"></i></span>
-        </label>
-        <label for="picker">
-          <input type="radio" name="mode" id="picker" value="picker" />
-          <span><i class="fa-solid fa-eye-dropper"></i></span>
-        </label>
-        <label for="rainbow">
-          <input type="radio" name="mode" id="rainbow" value="rainbow" />
-          <span><i class="fa-solid fa-shuffle"></i></span>
-        </label>
+      <!-- grid -->
+      <div id="grid">
       </div>
 
-      <!-- extra options -->
-      <div class="extra-options">
+      <div class="right-toolbar">
+        <!-- tools -->
+        <div id="tools">
+          <label for="pencil">
+            <input type="radio" name="mode" id="pencil" value="pencil" checked />
+            <span><i class="fa-solid fa-pen"></i></span>
+          </label>
+          <label for="eraser">
+            <input type="radio" name="mode" id="eraser" value="eraser" />
+            <span><i class="fa-solid fa-eraser"></i></span>
+          </label>
+          <label for="picker">
+            <input type="radio" name="mode" id="picker" value="picker" />
+            <span><i class="fa-solid fa-eye-dropper"></i></span>
+          </label>
+          <label for="rainbow">
+            <input type="radio" name="mode" id="rainbow" value="rainbow" />
+            <span><i class="fa-solid fa-shuffle"></i></span>
+          </label>
+        </div>
 
-
-
-        <!-- clear grid -->
-        <button class="btn" id="clear-grid">
-          <i class="fa-solid fa-chess-board"></i> Clear Grid
-        </button>
-      </div>
-
-      <div class="clr-picker-container">
-        <label for="color"> Color </label>
-        <div class="clr-picker">
-          <input type="color" id="color-select" name="color">
+        <div class="clr-picker-container">
+          <label for="color"> Color </label>
+          <div class="clr-picker">
+            <input type="color" id="color-select" name="color">
+          </div>
         </div>
       </div>
 
+      <div class="bottom-toolbar">
+        <!-- Grid Size slider container -->
+        <div>
+          <div class="grid-size-label-container">
+            <label for="grid-size-range">Grid Size:</label>
+            <output for="grid-size-range" id="grid-size-text">16x16</output>
+          </div>
+          <div>
+            <input type="range" min="4" max="64" value="16" id="grid-size-range" step="1">
+          </div>
+        </div>
+        <!-- extra options -->
+        <div class="extra-options">
+          <!-- clear grid -->
+          <button class="btn" id="clear-grid">
+            <i class="fa-solid fa-chess-board"></i> Clear Grid
+          </button>
+        </div>
+      </div>
     </div>
+
   </main>
 </body>
 

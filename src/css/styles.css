@@ -30,6 +30,8 @@
   --pd-1: 1rem;
   --pd-2: 2rem;
   --pd-3: 3rem;
+
+  --grid-size: 900px;
 }
 
 .dark-mode {
@@ -49,12 +51,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.top-controls {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
 }
 
 .settings-heading {
@@ -143,7 +139,7 @@ header {
 #grid {
   display: flex;
   flex-wrap: wrap;
-  width: 900px;
+  width: var(--grid-size);
   background-color: var(--clr-grid);
   border-radius: var(--pd-1);
   cursor: crosshair;
@@ -174,12 +170,6 @@ header {
 
 .grid-square-outline {
   outline: 1px solid rgba(49, 63, 78, 0.3);
-}
-
-.controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .slider::before {
@@ -267,6 +257,45 @@ header {
   bottom: 5%;
 }
 
+.grid-container {
+  position: relative;
+}
+
+.right-toolbar {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--grid-size);
+  padding: 1rem;
+}
+
+.top-toolbar {
+  position: absolute;
+  bottom: 105%;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.bottom-toolbar {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: var(--grid-size);
+  margin: 0 2rem;
+}
+
+#tools {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
 /* =============================================
 RADIO BUTTONS
 Taken from: https://codepen.io/eliasmeire/pen/JGjaov
@@ -279,7 +308,7 @@ Modified to fit the overall design
 }
 
 #tools label + label {
-  margin-left: 20px;
+  /* margin-left: 20px; */
 }
 
 input[type="radio"] {
