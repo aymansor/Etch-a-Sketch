@@ -172,28 +172,6 @@ header {
   outline: 1px solid rgba(49, 63, 78, 0.3);
 }
 
-.slider::before {
-  background-color: var(--clr-fg);
-  box-shadow: 0px 0px 11px 1px rgba(0, 0, 0, 0.41) inset;
-  -webkit-box-shadow: 0px 0px 11px 1px rgba(0, 0, 0, 0.41) inset;
-  -moz-box-shadow: 0px 0px 11px 1px rgba(0, 0, 0, 0.41) inset;
-}
-
-.slider::before,
-.knob {
-  width: 8em;
-  height: 8em;
-  position: relative;
-}
-
-.knob::before,
-.knob::after,
-.slider::before {
-  content: "";
-  position: absolute;
-  border-radius: var(--border-radius-round);
-}
-
 /* Buttons */
 .btn {
   cursor: pointer;
