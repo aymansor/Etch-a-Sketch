@@ -22,10 +22,10 @@
   <header>
     <div id="left-actions">
       <button class="btn">
-        <i class="fa-solid fa-share"> Share</i>
+        <i class="fa-solid fa-share"></i> &nbsp;Share
       </button>
       <button class="btn" id="save-btn">
-        <i class="fa-solid fa-download"> Save</i>
+        <i class="fa-solid fa-download"></i> &nbsp;Save
       </button>
       <button class="btn" id="perform-undo-btn">
         <i class="fa-solid fa-rotate-left"></i>
@@ -95,7 +95,7 @@
         </div>
 
         <div class="color-swatch-options">
-          <span id="selected-swatch-name"></span>
+          <span class="text" id="selected-swatch-name"></span>
           <div class="swatch-arrows">
             <button class="swatch-arrow" id="swatch-left-arrow">
               <i class="fa-solid fa-caret-left"></i>
@@ -107,7 +107,7 @@
         </div>
 
         <div class="clr-picker-container">
-          <label for="color"> Color </label>
+          <label class="text" id="clr-picker-label" for="color"> Color </label>
           <div class="clr-picker">
             <input type="color" id="color-select" name="color">
           </div>
@@ -138,7 +138,7 @@
       <div class="bottom-toolbar">
         <div>
           <div class="grid-size-label-container">
-            <label for="grid-size-range">Grid Size:</label>
+            <label class="text" for="grid-size-range">Grid Size:</label>
             <output for="grid-size-range" id="grid-size-text">16x16</output>
           </div>
           <div>
@@ -147,7 +147,7 @@
         </div>
         <div class="extra-options">
           <button class="btn" id="clear-grid">
-            <i class="fa-solid fa-chess-board"></i> Clear Grid
+            <i class="fa-solid fa-chess-board"></i> &nbsp;Clear Grid
           </button>
         </div>
       </div>

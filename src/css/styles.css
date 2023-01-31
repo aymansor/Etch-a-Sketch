@@ -82,6 +82,7 @@ header {
 }
 
 #title {
+  font-weight: normal;
   letter-spacing: 8px;
   border: 2px solid var(--clr-text);
   padding: 0.5rem 1rem;
@@ -336,11 +337,15 @@ hr {
   border: 4px solid var(--clr-text);
   box-shadow: 0 6px 0 -1px var(--clr-shadow);
   margin: 1rem 0;
+  cursor: pointer;
 }
 
 #selected-swatch-name {
-  text-align: center;
   width: 100px;
+}
+
+.text {
+  text-align: center;
   text-transform: uppercase;
 }
 
@@ -360,6 +365,7 @@ hr {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.25rem;
 }
 
 /* =================================================== */
@@ -370,9 +376,14 @@ hr {
   margin: 1rem 0;
 }
 
+#clr-picker-label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
 .clr-picker {
   width: 64px;
-  height: 64px;
+  aspect-ratio: 1/1;
   border-radius: var(--border-radius);
   overflow: hidden;
   border: 4px solid var(--clr-text);
@@ -498,13 +509,6 @@ input[type="radio"]:checked + span {
 /* RANGE SLIDER */
 /* =================================================== */
 
-label {
-  color: var(--clr-text);
-  font-size: 1rem;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
 input[type="range"] {
   appearance: none;
   -webkit-appearance: none;
@@ -559,7 +563,7 @@ input[type="range"]::-webkit-slider-thumb {
   background: var(--clr-fg);
   box-shadow: 0 0 3px var(--clr-shadow), 0 0 5px var(--clr-shadow);
   cursor: pointer;
-  transform: translateY(-16%);
+  transform: translateY(-25%);
 }
 
 input[type="range"]::-moz-range-track {
