@@ -179,6 +179,7 @@ const onGridChangeRange = (value) => {
   State.clearHistory();
   document.getElementById("grid-size-text").value = `${value}x${value}`;
   gridSize = Number(value);
+  localStorage.setItem("gridSize", gridSize);
   RemoveGrid();
   CreateGrid();
 };
@@ -355,9 +356,6 @@ const main = () => {
   document.addEventListener("keydown", handleKeydown);
   saveBtn.addEventListener("click", saveImage);
 
-  // create the grid
-  CreateGrid();
-
   createColorSwatch();
 
   document.querySelector("#swatch-left-arrow").addEventListener("click", () => {
@@ -386,6 +384,15 @@ const main = () => {
 
   // when the page load check if the toggleGrid was enabled before
   window.addEventListener("load", () => {
+    if (localStorage.getItem("gridSize") !== null) {
+      gridSize = localStorage.getItem("gridSize");
+    }
+    gridRange.value = gridSize;
+    document.getElementById("grid-size-text").value = `${gridSize}x${gridSize}`;
+
+    // create the grid
+    CreateGrid();
+
     toggleGrid.checked = toggleOutlineChecked;
     toggleOutline();
 
