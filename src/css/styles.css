@@ -42,7 +42,7 @@
   --clr-grid: #262626;
 }
 
-#pad {
+body {
   font-family: var(--ff-primary);
   color: var(--clr-text);
   font-size: var(--fs-body);
@@ -53,54 +53,9 @@
   align-items: center;
 }
 
-.settings-heading {
-  font-size: var(--fs-l);
-  font-weight: var(--fw-bold);
-  letter-spacing: 2px;
-}
-
-.setting-option {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 2rem 0;
-}
-
-.setting-option-title {
-  font-weight: var(--fw-bold);
-  letter-spacing: 2px;
-}
-
-.setting-option-description {
-  opacity: 0.8;
-  font-size: var(--fs-m);
-  margin: 0.25rem 0;
-}
-
-hr {
-  height: 2px;
-  background-color: var(--clr-text);
-  border: none;
-}
-
-#settings-popup {
-  display: none;
-  position: absolute;
-  top: 494%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: var(--clr-fg);
-  border-radius: var(--border-radius);
-  padding: var(--pd-2);
-  border: 4px solid var(--clr-shadow);
-  width: 700px;
-  aspect-ratio: 1/1;
-  z-index: 3;
-}
-
-#settings-popup.show {
-  display: block;
-}
+/* =================================================== */
+/* HEADER */
+/* =================================================== */
 
 header {
   position: relative;
@@ -138,43 +93,116 @@ header {
     0 0 10px 5px rgba(0, 0, 0, 0.35) inset;
 }
 
-#grid {
-  display: flex;
-  flex-wrap: wrap;
-  width: var(--grid-size);
-  background-color: var(--clr-grid);
-  border-radius: var(--pd-1);
-  cursor: crosshair;
-  margin: 2rem;
-  outline: 1rem solid var(--clr-fg);
-  box-shadow: 0 0 0 22px var(--clr-text), 0 0 0 2px var(--clr-text) inset,
-    0 12px 1px -2px var(--clr-shadow) inset,
-    14px 0 1px 0 var(--clr-shadow) inset,
-    -30px 0 1px -20px var(--clr-shadow) inset,
-    0 -10.5px 1px var(--clr-shadow) inset,
-    5px 0 10px 10px rgba(0, 0, 0, 0.35) inset;
-  padding: 0.6rem;
-  user-select: none;
+#settings-popup {
+  display: none;
+  position: absolute;
+  top: 494%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--clr-fg);
+  border-radius: var(--border-radius);
+  padding: var(--pd-2);
+  border: 4px solid var(--clr-shadow);
+  width: 700px;
   aspect-ratio: 1/1;
+  z-index: 3;
 }
 
-.grid-square {
-  transition: all 175ms ease-in-out;
+#settings-popup.show {
+  display: block;
 }
 
-.grid-square .single:hover {
-  opacity: 0.5;
+.settings-heading {
+  font-size: var(--fs-l);
+  font-weight: var(--fw-bold);
+  letter-spacing: 2px;
 }
 
-.grid-square.hover {
-  opacity: 0.5;
+.setting-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2rem 0;
 }
 
-.grid-square-outline {
-  outline: 1px solid rgba(49, 63, 78, 0.3);
+.setting-option-title {
+  font-weight: var(--fw-bold);
+  letter-spacing: 2px;
 }
 
-/* Buttons */
+.setting-option-description {
+  opacity: 0.8;
+  font-size: var(--fs-m);
+  margin: 0.25rem 0;
+}
+
+hr {
+  height: 2px;
+  background-color: var(--clr-text);
+  border: none;
+}
+
+/* =================================================== */
+/* Checkbox styling */
+/* =================================================== */
+
+.checkbox input[type="checkbox"] {
+  visibility: hidden;
+  display: none;
+}
+
+.checkbox .toggle {
+  position: relative;
+  display: block;
+  width: 80px;
+  height: 40px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transform: translate3d(0, 0, 0);
+}
+.checkbox .toggle:before {
+  content: "";
+  position: relative;
+  top: 6px;
+  left: 6px;
+  width: 68px;
+  height: 28px;
+  display: block;
+  background: var(--clr-text);
+  box-shadow: 0 0 0 4px var(--clr-shadow), 0 0 8px -2px black inset;
+  border-radius: 16px;
+  transition: background 0.2s ease;
+}
+.checkbox .toggle span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  background: var(--clr-bg);
+  border-radius: 20px;
+  box-shadow: 0 0 0 2px var(--clr-text), 0 6px 16px var(--clr-shadow);
+  transition: all 0.2s ease;
+}
+
+.checkbox .checkbox-input:checked + .toggle:before {
+  background: var(--clr-grid);
+}
+.checkbox .checkbox-input:checked + .toggle span {
+  background: var(--clr-fg);
+  transform: translateX(40px);
+  transition: all 0.2s cubic-bezier(1.6, 0.8, 0.6, 2.5), background 0.15s ease;
+  box-shadow: 0 0 0 2px var(--clr-text), 0 6px 16px var(--clr-shadow);
+}
+.checkbox .checkbox-input:checked + .toggle span:before {
+  transform: scale(1);
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+/* =================================================== */
+/* Button styling */
+/* =================================================== */
 .btn {
   cursor: pointer;
   color: var(--clr-text);
@@ -237,44 +265,53 @@ header {
   bottom: 5%;
 }
 
+/* =================================================== */
+/* GRID */
+/* =================================================== */
+
+#grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: var(--grid-size);
+  background-color: var(--clr-grid);
+  border-radius: var(--pd-1);
+  cursor: crosshair;
+  margin: 2rem;
+  outline: 1rem solid var(--clr-fg);
+  box-shadow: 0 0 0 22px var(--clr-text), 0 0 0 2px var(--clr-text) inset,
+    0 12px 1px -2px var(--clr-shadow) inset,
+    14px 0 1px 0 var(--clr-shadow) inset,
+    -30px 0 1px -20px var(--clr-shadow) inset,
+    0 -10.5px 1px var(--clr-shadow) inset,
+    5px 0 10px 10px rgba(0, 0, 0, 0.35) inset;
+  padding: 0.6rem;
+  user-select: none;
+  aspect-ratio: 1/1;
+}
+
+.grid-square {
+  transition: all 175ms ease-in-out;
+}
+
+.grid-square .single:hover {
+  opacity: 0.5;
+}
+
+.grid-square.hover {
+  opacity: 0.5;
+}
+
+.grid-square-outline {
+  outline: 1px solid rgba(49, 63, 78, 0.3);
+}
+
 .grid-container {
   position: relative;
 }
 
-.right-toolbar {
-  position: absolute;
-  top: 0;
-  left: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  height: var(--grid-size);
-  padding: 1rem;
-}
-
-#selected-swatch-name {
-  text-align: center;
-  width: 100px;
-  text-transform: uppercase;
-}
-
-.swatch-arrow {
-  border: 0;
-  color: var(--clr-text);
-  background: var(--clr-fg);
-  border-radius: var(--border-radius-round);
-  width: 25px;
-  aspect-ratio: 1/1;
-  margin: 0 0.25rem;
-}
-
-.color-swatch-options {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+/* =================================================== */
+/* LEFT TOOLBAR */
+/* =================================================== */
 
 .left-toolbar {
   position: absolute;
@@ -301,14 +338,76 @@ header {
   margin: 1rem 0;
 }
 
-.bottom-toolbar {
-  position: absolute;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: var(--grid-size);
-  margin: 0 2rem;
+#selected-swatch-name {
+  text-align: center;
+  width: 100px;
+  text-transform: uppercase;
 }
+
+.swatch-arrow {
+  border: 0;
+  color: var(--clr-text);
+  background: var(--clr-fg);
+  border-radius: var(--border-radius-round);
+  width: 25px;
+  aspect-ratio: 1/1;
+  margin: 0 0.25rem;
+}
+
+.color-swatch-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =================================================== */
+/* COLOR PICKER STYLING */
+/* =================================================== */
+
+.clr-picker-container {
+  margin: 1rem 0;
+}
+
+.clr-picker {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  border: 4px solid var(--clr-text);
+  box-shadow: 0 6px 0 -1px var(--clr-shadow);
+}
+
+[type="color"] {
+  border: 0;
+  padding: 0;
+  width: 200%;
+  height: 200%;
+  cursor: pointer;
+  transform: translate(-25%, -25%);
+}
+
+/* =================================================== */
+/* RIGHT TOOLBAR */
+/* =================================================== */
+
+.right-toolbar {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--grid-size);
+  padding: 1rem;
+}
+
+/* =================================================== */
+/* RADIO BUTTONS */
+/* Taken from: https://codepen.io/eliasmeire/pen/JGjaov */
+/* Modified to fit the overall design */
+/* =================================================== */
 
 #tools {
   display: flex;
@@ -316,19 +415,9 @@ header {
   gap: 4rem;
 }
 
-/* =============================================
-RADIO BUTTONS
-Taken from: https://codepen.io/eliasmeire/pen/JGjaov
-Modified to fit the overall design
-=============================================== */
-
 #tools label {
   cursor: pointer;
   position: relative;
-}
-
-#tools label + label {
-  /* margin-left: 20px; */
 }
 
 input[type="radio"] {
@@ -365,17 +454,12 @@ input[type="radio"]:checked + span {
   box-shadow: 0 2px 0 1px var(--clr-shadow);
 }
 
-/* input[type="radio"]:focus + span {
-  color: var(--clr-bg);
-} */
-
 /* ================ TOOLTIPS ================= */
 
 #tools label:hover::before {
   content: attr(for);
   font-family: Roboto, inherit;
   text-transform: capitalize;
-  /* font-size: 11px; */
   position: absolute;
   bottom: 200%;
   left: 0;
@@ -389,7 +473,18 @@ input[type="radio"]:checked + span {
   display: block;
 }
 
-/* Extra options */
+/* =================================================== */
+/* BOTTOM TOOLBAR */
+/* =================================================== */
+
+.bottom-toolbar {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: var(--grid-size);
+  margin: 0 2rem;
+}
 
 .extra-options {
   display: flex;
@@ -398,64 +493,9 @@ input[type="radio"]:checked + span {
   gap: 3rem;
 }
 
-/* Checkbox styling */
-
-.checkbox input[type="checkbox"] {
-  visibility: hidden;
-  display: none;
-}
-
-.checkbox .toggle {
-  position: relative;
-  display: block;
-  width: 80px;
-  height: 40px;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transform: translate3d(0, 0, 0);
-}
-.checkbox .toggle:before {
-  content: "";
-  position: relative;
-  top: 6px;
-  left: 6px;
-  width: 68px;
-  height: 28px;
-  display: block;
-  background: var(--clr-text);
-  box-shadow: 0 0 0 4px var(--clr-shadow), 0 0 8px -2px black inset;
-  border-radius: 16px;
-  transition: background 0.2s ease;
-}
-.checkbox .toggle span {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 40px;
-  height: 40px;
-  /* display: block; */
-  background: var(--clr-bg);
-  border-radius: 20px;
-  box-shadow: 0 0 0 2px var(--clr-text), 0 6px 16px var(--clr-shadow);
-  transition: all 0.2s ease;
-}
-
-.checkbox .checkbox-input:checked + .toggle:before {
-  background: var(--clr-grid);
-}
-.checkbox .checkbox-input:checked + .toggle span {
-  background: var(--clr-fg);
-  transform: translateX(40px);
-  transition: all 0.2s cubic-bezier(1.6, 0.8, 0.6, 2.5), background 0.15s ease;
-  box-shadow: 0 0 0 2px var(--clr-text), 0 6px 16px var(--clr-shadow);
-}
-.checkbox .checkbox-input:checked + .toggle span:before {
-  transform: scale(1);
-  opacity: 0;
-  transition: all 0.4s ease;
-}
-
-/* Slider Styling */
+/* =================================================== */
+/* RANGE SLIDER */
+/* =================================================== */
 
 label {
   color: var(--clr-text);
@@ -465,6 +505,7 @@ label {
 }
 
 input[type="range"] {
+  appearance: none;
   -webkit-appearance: none;
   width: 100%;
   height: 10px;
@@ -482,8 +523,8 @@ input[type="range"]:hover {
 }
 
 input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
   appearance: none;
+  -webkit-appearance: none;
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -529,6 +570,7 @@ input[type="range"]::-moz-range-track {
 }
 
 input[type="range"]::-moz-range-thumb {
+  appearance: none;
   -webkit-appearance: none;
   width: 2rem;
   height: 2rem;
@@ -536,10 +578,9 @@ input[type="range"]::-moz-range-thumb {
   background: var(--clr-fg);
   box-shadow: 0 0 3px var(--clr-shadow), 0 0 5px var(--clr-shadow);
   cursor: pointer;
-  /* transform: translateY(-16%); */
 }
 
-output {
+#grid-size-text {
   display: inline-block;
   width: 100px;
   margin-left: 1rem;
@@ -558,27 +599,4 @@ output {
     -30px 0 1px -25px var(--clr-shadow) inset,
     0 -10.5px 0 -6px var(--clr-shadow) inset,
     0 0 10px 5px rgba(0, 0, 0, 0.35) inset;
-}
-
-/* Color picker styling */
-.clr-picker-container {
-  margin: 1rem 0;
-}
-
-.clr-picker {
-  width: 64px;
-  height: 64px;
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  border: 4px solid var(--clr-text);
-  box-shadow: 0 6px 0 -1px var(--clr-shadow);
-}
-
-[type="color"] {
-  border: 0;
-  padding: 0;
-  width: 200%;
-  height: 200%;
-  cursor: pointer;
-  transform: translate(-25%, -25%);
 }

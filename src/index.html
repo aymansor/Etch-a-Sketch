@@ -18,11 +18,8 @@
   <script src="./js/theme-switch.js" defer></script>
 </head>
 
-<!-- body is the sketch pad -->
-
-<body id="pad">
+<body>
   <header>
-    <!-- left buttons -->
     <div id="left-actions">
       <button class="btn">
         <i class="fa-solid fa-share"> Share</i>
@@ -40,12 +37,10 @@
       </button>
     </div>
 
-    <!-- title -->
     <div id="page-title">
       <h1 id="title">Etch a Sketch</h1>
     </div>
 
-    <!-- right buttons -->
     <div id="right-actions">
       <div>
         <button class="btn" id="mode-switch">
@@ -61,7 +56,6 @@
             <span class="settings-heading">Settings</span>
             <hr>
           </div>
-          <!-- toggle grid -->
           <div class="setting-option">
             <div class="setting-option-info">
               <span class="setting-option-title">
@@ -73,7 +67,6 @@
               <label for="toggle-grid" class="toggle"><span></span></label>
             </div>
           </div>
-          <!-- Toggle mouse trail -->
           <div class="setting-option">
             <div class="setting-option-info">
               <span class="setting-option-title">
@@ -94,7 +87,6 @@
 
   <main>
     <div class="grid-container">
-      <!-- grid -->
       <div id="grid">
       </div>
 
@@ -112,7 +104,6 @@
               <i class="fa-solid fa-caret-right"></i>
             </button>
           </div>
-
         </div>
 
         <div class="clr-picker-container">
@@ -124,7 +115,6 @@
       </div>
 
       <div class="right-toolbar">
-        <!-- tools -->
         <div id="tools">
           <label for="pencil">
             <input type="radio" name="mode" id="pencil" value="pencil" checked />
@@ -146,7 +136,6 @@
       </div>
 
       <div class="bottom-toolbar">
-        <!-- Grid Size slider container -->
         <div>
           <div class="grid-size-label-container">
             <label for="grid-size-range">Grid Size:</label>
@@ -156,9 +145,7 @@
             <input type="range" min="4" max="64" value="16" id="grid-size-range" step="1">
           </div>
         </div>
-        <!-- extra options -->
         <div class="extra-options">
-          <!-- clear grid -->
           <button class="btn" id="clear-grid">
             <i class="fa-solid fa-chess-board"></i> Clear Grid
           </button>
