@@ -209,6 +209,7 @@ hr {
   color: var(--clr-text);
   font-weight: var(--fw-bold);
   text-transform: uppercase;
+  font-size: inherit;
   font-family: inherit;
   padding: 1rem;
   margin: 0 0.25rem;
@@ -254,7 +255,6 @@ hr {
 #perform-undo-btn,
 #perform-redo-btn {
   position: relative;
-  width: 65px;
   aspect-ratio: 1/1;
 }
 
