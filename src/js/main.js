@@ -208,8 +208,8 @@ const saveImage = () => {
   domtoimage
     .toPng(grid, {
       style: {
-        margin: "0",
-        padding: "0",
+        border: 0,
+        margin: 0,
         outline: "none",
         "box-shadow": "none",
         "border-radius": "none",
@@ -331,6 +331,7 @@ const createColorSwatch = () => {
   colors.get(firstKey).forEach((color) => {
     const swatchColor = document.createElement("div");
     swatchColor.classList.add("swatch-color");
+    swatchColor.classList.add("inner-depth");
     swatchColor.style.backgroundColor = color;
     swatchColor.addEventListener("click", getClickedSwatchColor);
     swatchColorsContainer.appendChild(swatchColor);
