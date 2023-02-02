@@ -22,23 +22,15 @@
   <header>
     <div id="left-actions">
       <button class="btn">
-        <i class="fa-solid fa-share"></i> &nbsp;Share
+        <i class="fa-solid fa-share"></i>
       </button>
       <button class="btn" id="save-btn">
-        <i class="fa-solid fa-download"></i> &nbsp;Save
-      </button>
-      <button class="btn" id="perform-undo-btn">
-        <i class="fa-solid fa-rotate-left"></i>
-        <span class="undo-redo-steps">0</span>
-      </button>
-      <button class="btn" id="perform-redo-btn">
-        <i class="fa-solid fa-rotate-right"></i>
-        <span class="undo-redo-steps">0</span>
+        <i class="fa-solid fa-download"></i>
       </button>
     </div>
 
     <div id="page-title">
-      <h1 id="title">Etch a Sketch</h1>
+      <h1 class="inner-depth" id="title">Etch a Sketch</h1>
     </div>
 
     <div id="right-actions">
@@ -51,7 +43,7 @@
         <button class="btn" id="toggle-settings">
           <i class="fa-solid fa-gear"></i>
         </button>
-        <div id="settings-popup">
+        <div id="settings-popup" class="inner-depth">
           <div>
             <span class="settings-heading">Settings</span>
             <hr>
@@ -86,74 +78,99 @@
   </header>
 
   <main>
-    <div class="grid-container">
-      <div id="grid">
-      </div>
+    <div class="pad-container">
 
-      <div class="left-toolbar">
-        <div id="swatch-colors-container">
-        </div>
+      <div>
 
-        <div class="color-swatch-options">
-          <span class="text" id="selected-swatch-name"></span>
-          <div class="swatch-arrows">
-            <button class="swatch-arrow" id="swatch-left-arrow">
-              <i class="fa-solid fa-caret-left"></i>
-            </button>
-            <button class="swatch-arrow" id="swatch-right-arrow">
-              <i class="fa-solid fa-caret-right"></i>
-            </button>
+        <div class="pad">
+          <div class="left-toolbar">
+            <div class="color-swatch-options">
+              <span class="text inner-depth" id="selected-swatch-name"></span>
+              <div class="swatch-arrows">
+                <button class="btn swatch-arrow" id="swatch-left-arrow">
+                  <i class="fa-solid fa-caret-left"></i>
+                </button>
+                <button class="btn swatch-arrow" id="swatch-right-arrow">
+                  <i class="fa-solid fa-caret-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <div id="swatch-colors-container">
+            </div>
+
+            <div class="clr-picker-container">
+              <label class="text" id="clr-picker-label" for="color"> Color </label>
+              <div class="clr-picker inner-depth">
+                <input type="color" id="color-select" name="color">
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-container inner-depth">
+            <div id="grid">
+            </div>
+          </div>
+
+          <div class="right-toolbar">
+            <div id="tools">
+              <label for="pencil">
+                <input type="radio" name="mode" id="pencil" value="pencil" checked />
+                <span><i class="fa-solid fa-pen"></i></span>
+              </label>
+              <label for="eraser">
+                <input type="radio" name="mode" id="eraser" value="eraser" />
+                <span><i class="fa-solid fa-eraser"></i></span>
+              </label>
+              <label for="picker">
+                <input type="radio" name="mode" id="picker" value="picker" />
+                <span><i class="fa-solid fa-eye-dropper"></i></span>
+              </label>
+              <label for="rainbow">
+                <input type="radio" name="mode" id="rainbow" value="rainbow" />
+                <span><i class="fa-solid fa-shuffle"></i></span>
+              </label>
+            </div>
           </div>
         </div>
 
-        <div class="clr-picker-container">
-          <label class="text" id="clr-picker-label" for="color"> Color </label>
-          <div class="clr-picker">
-            <input type="color" id="color-select" name="color">
-          </div>
-        </div>
-      </div>
 
-      <div class="right-toolbar">
-        <div id="tools">
-          <label for="pencil">
-            <input type="radio" name="mode" id="pencil" value="pencil" checked />
-            <span><i class="fa-solid fa-pen"></i></span>
-          </label>
-          <label for="eraser">
-            <input type="radio" name="mode" id="eraser" value="eraser" />
-            <span><i class="fa-solid fa-eraser"></i></span>
-          </label>
-          <label for="picker">
-            <input type="radio" name="mode" id="picker" value="picker" />
-            <span><i class="fa-solid fa-eye-dropper"></i></span>
-          </label>
-          <label for="rainbow">
-            <input type="radio" name="mode" id="rainbow" value="rainbow" />
-            <span><i class="fa-solid fa-shuffle"></i></span>
-          </label>
-        </div>
-      </div>
-
-      <div class="bottom-toolbar">
-        <div>
-          <div class="grid-size-label-container">
-            <label class="text" for="grid-size-range">Grid Size:</label>
-            <output for="grid-size-range" id="grid-size-text"></output>
-          </div>
+        <div class="bottom-toolbar">
           <div>
-            <input type="range" min="4" max="64" value="16" id="grid-size-range" step="1">
+            <div class="grid-size-label-container">
+              <label class="text inner-depth" for="grid-size-range" id="grid-size-label">
+                Size
+              </label>
+              <output for="grid-size-range" class="inner-depth" id="grid-size-text"></output>
+            </div>
+            <div class="grid-size-container">
+              <input type="range" min="4" max="64" value="16" id="grid-size-range" step="1">
+            </div>
+          </div>
+          <div class="extra-options">
+            <button class="btn" id="clear-grid">
+              <i class="fa-solid fa-chess-board"></i>
+            </button>
+            <button class="btn" id="perform-undo-btn">
+              <i class="fa-solid fa-rotate-left"></i>
+              <span class="undo-redo-steps">0</span>
+            </button>
+            <button class="btn" id="perform-redo-btn">
+              <i class="fa-solid fa-rotate-right"></i>
+              <span class="undo-redo-steps">0</span>
+            </button>
           </div>
         </div>
-        <div class="extra-options">
-          <button class="btn" id="clear-grid">
-            <i class="fa-solid fa-chess-board"></i> &nbsp;Clear Grid
-          </button>
-        </div>
-      </div>
-    </div>
 
+
+      </div>
   </main>
+
+  <footer>
+    <div>
+      <p>footer</p>
+    </div>
+  </footer>
 </body>
 
 </html>

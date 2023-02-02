@@ -208,8 +208,8 @@ const saveImage = () => {
   domtoimage
     .toPng(grid, {
       style: {
-        margin: "0",
-        padding: "0",
+        border: 0,
+        margin: 0,
         outline: "none",
         "box-shadow": "none",
         "border-radius": "none",
@@ -230,85 +230,18 @@ const saveImage = () => {
 
 // [Color Swatches]
 const colors = new Map([
-  [
-    "pixel",
-    [
-      "#8BC34A",
-      "#FFC107",
-      "#03A9F4",
-      "#009688",
-      "#E91E63",
-      "#9C27B0",
-      "#EA4848",
-      "#FF5722",
-      "#795548",
-      "#CDDC39",
-    ],
-  ],
+  ["pixel", ["#8BC34A", "#FFC107", "#03A9F4", "#009688", "#E91E63", "#9C27B0"]],
 
-  [
-    "nord",
-    [
-      "#BF616A",
-      "#D08770",
-      "#EBCB8B",
-      "#A3BE8C",
-      "#B48EAD",
-      "#88C0D0",
-      "#8FBCBB",
-      "#4C566A",
-      "#E5E9F0",
-      "#2E3440",
-    ],
-  ],
+  ["nord", ["#BF616A", "#D08770", "#EBCB8B", "#A3BE8C", "#B48EAD", "#88C0D0"]],
 
   [
     "pastel",
-    [
-      "#FFC0CB",
-      "#FFB6C1",
-      "#DCFFFD",
-      "#F0E6FF",
-      "#FCB1FF",
-      "#A4C4FF",
-      "#B4C4FF",
-      "#E1D2FF",
-      "#FFC0FF",
-      "#E8BFC4",
-    ],
+    ["#FFC0CB", "#FFB6C1", "#DCFFFD", "#F0E6FF", "#FCB1FF", "#A4C4FF"],
   ],
 
-  [
-    "earth",
-    [
-      "#8B5E3C",
-      "#B45B04",
-      "#B8860B",
-      "#BDB76B",
-      "#556B2F",
-      "#8B2323",
-      "#6B8E23",
-      "#CD5C5C",
-      "#8B008B",
-      "#8B2252",
-    ],
-  ],
+  ["earth", ["#8B5E3C", "#B45B04", "#B8860B", "#BDB76B", "#556B2F", "#8B2323"]],
 
-  [
-    "neon",
-    [
-      "#FFFF33",
-      "#00FFFF",
-      "#FF00FF",
-      "#00FF00",
-      "#0000FF",
-      "#FF3399",
-      "#CCFF00",
-      "#FF6600",
-      "#0033CC",
-      "#6600FF",
-    ],
-  ],
+  ["neon", ["#FFFF33", "#00FFFF", "#FF00FF", "#00FF00", "#0000FF", "#FF3399"]],
 ]);
 
 const swatchColorsContainer = document.querySelector(
