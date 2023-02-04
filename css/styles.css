@@ -206,10 +206,16 @@ header {
   height: var(--header-height);
 }
 
-footer {
+footer, .credit {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: var(--spacing-small);
+}
+
+.credit {
+  text-decoration: none;
+  color: inherit;
 }
 
 #left-actions,
