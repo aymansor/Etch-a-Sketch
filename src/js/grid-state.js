@@ -46,7 +46,7 @@ const resetRedoStep = () => {
 };
 
 const getCurrentState = () => {
-  return Main.gridSquares.map((square) => square.style.backgroundColor);
+  return Main.gridCells.map((square) => square.style.backgroundColor);
 };
 
 // Save current state
@@ -69,7 +69,7 @@ const performUndo = () => {
 
     // Loop over each square in the grid and update its background color
     // to the value in the undoStack at the current undoStep
-    Main.gridSquares.forEach((square, index) => {
+    Main.gridCells.forEach((square, index) => {
       square.style.backgroundColor = undoStack[undoStep - 1][index];
     });
     undoStack.pop();
@@ -85,7 +85,7 @@ const performRedo = () => {
 
     // Loop over each square in the grid and update its background color
     // to the value in the redoStack at the current redoStep
-    Main.gridSquares.forEach((square, index) => {
+    Main.gridCells.forEach((square, index) => {
       square.style.backgroundColor = redoStack[redoStep - 1][index];
     });
     redoStack.pop();

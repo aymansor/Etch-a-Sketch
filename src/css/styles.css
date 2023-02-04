@@ -52,7 +52,7 @@
   /* --btn-size: 3rem; */
 
   --grid-size: 35vw;
-  --grid-padding: var(--spacing-small);
+  --grid-padding: 0;
   --clr-picker-container-size: 4rem;
 }
 
@@ -332,6 +332,7 @@ hr {
   background-color: hsl(var(--clr-accent));
   transform-style: preserve-3d;
   transition: all 175ms cubic-bezier(0, 0, 1, 1);
+  touch-action: none;
 }
 
 .btn::before {
@@ -404,6 +405,7 @@ hr {
   margin: var(--spacing-medium);
   padding: var(--grid-padding);
   user-select: none;
+  touch-action: none;
 }
 
 .grid-square {
