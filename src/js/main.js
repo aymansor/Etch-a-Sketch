@@ -1,7 +1,5 @@
 "use strict";
 
-import * as State from "./grid-state.js";
-
 /* ------------------------------------------------------------------------- */
 /*                                DOM ELEMENTS                               */
 /* ------------------------------------------------------------------------- */
@@ -43,7 +41,7 @@ let gridBackgroundColor = "#ffffff";
  * An array that stores the individual grid cells in the grid
  * @type {Array.<HTMLDivElement>}
  */
-export let gridCells = [];
+let gridCells = [];
 
 /* ------------------------------------------------------------------------- */
 /*                                 Grid Logic                                */
@@ -73,22 +71,17 @@ const CreateGrid = () => {
   }
 };
 
-// disable right click inside the grid
-grid.addEventListener("contextmenu", (e) => e.preventDefault());
-
 /**
  * Clears the grid and resets the undo/redo state history.
  */
 const clearGrid = () => {
   // Clears the undo/redo state history.
-  State.clearHistory();
+  clearHistory();
   // Resets the background color of all cells to the default grid background color.
   gridCells.forEach((cell) => {
     cell.style.backgroundColor = gridBackgroundColor;
   });
 };
-
-clearGridButton.addEventListener("click", clearGrid);
 
 const DeleteGrid = () => {
   gridCells.forEach((cell) => {
@@ -103,7 +96,7 @@ const DeleteGrid = () => {
  * @param {Number} value - The new grid size value.
  */
 const handleGridResize = (value) => {
-  State.clearHistory();
+  clearHistory();
 
   document.querySelector("#grid-size-text").value = `${value}x${value}`;
   gridSize = Number(value);
@@ -113,10 +106,6 @@ const handleGridResize = (value) => {
   DeleteGrid();
   CreateGrid();
 };
-
-gridSizeRange.addEventListener("input", (event) => {
-  handleGridResize(event.target.value);
-});
 
 /* ----------------------------- Handle actions ---------------------------- */
 
@@ -129,7 +118,7 @@ gridSizeRange.addEventListener("input", (event) => {
 const handleUserAction = (event) => {
   // Save current state on first "pointerdown" event before performing actions.
   if (event.type === "pointerdown") {
-    State.saveState();
+    saveState();
   }
 
   if (event.pointerType === "mouse") {
@@ -286,8 +275,6 @@ const onPrimaryColorInputChange = () => {
   primaryColor = primaryColorInput.value;
 };
 
-primaryColorInput.addEventListener("input", onPrimaryColorInputChange);
-
 /**
  *
  * @param {String} rgb - An RGB color value string.
@@ -328,9 +315,6 @@ const toggleCellOutline = () => {
   });
 };
 
-// Add event listener to checkbox
-cellOutlineCheckbox.addEventListener("change", toggleCellOutline);
-
 const handleMouseTrail = () => {
   localStorage.setItem("mouse-trail-checked", mouseTrailToggle.checked);
   if (mouseTrailToggle.checked) {
@@ -345,14 +329,109 @@ const handleMouseTrail = () => {
   }
 };
 
-mouseTrailToggle.addEventListener("change", handleMouseTrail);
-
 const mouseTrailEffect = (event) => {
   event.target.classList.add("hover");
   event.target.classList.add("single");
   event.target.addEventListener("transitionend", () =>
     event.target.classList.remove("hover")
   );
+};
+
+/* ------------------------------------------------------------------------- */
+/*                                STATE LOGIC                                */
+/* ------------------------------------------------------------------------- */
+
+const performUndoBtn = document.querySelector("#perform-undo-btn");
+const performRedoBtn = document.querySelector("#perform-redo-btn");
+const undoRedoStepsLabels = document.querySelectorAll(".undo-redo-steps");
+
+let undoStack = [];
+let undoStep = 0;
+let redoStack = [];
+let redoStep = 0;
+
+const updateUndoRedoStepLabel = (index, step) => {
+  undoRedoStepsLabels[index].textContent = step;
+};
+
+const incrementUndoStep = () => {
+  undoStep++;
+  updateUndoRedoStepLabel(0, undoStep);
+};
+
+const decrementUndoStep = () => {
+  undoStep--;
+  updateUndoRedoStepLabel(0, undoStep);
+};
+
+const resetUndoStep = () => {
+  undoStack = [];
+  undoStep = 0;
+  updateUndoRedoStepLabel(0, undoStep);
+};
+
+const incrementRedoStep = () => {
+  redoStep++;
+  updateUndoRedoStepLabel(1, redoStep);
+};
+
+const decrementRedoStep = () => {
+  redoStep--;
+  updateUndoRedoStepLabel(1, redoStep);
+};
+
+const resetRedoStep = () => {
+  redoStack = [];
+  redoStep = 0;
+  updateUndoRedoStepLabel(1, redoStep);
+};
+
+const getCurrentState = () => {
+  return gridCells.map((square) => square.style.backgroundColor);
+};
+
+// Save current state
+const saveState = () => {
+  undoStack.push(getCurrentState());
+  incrementUndoStep();
+};
+
+const clearHistory = () => {
+  resetUndoStep();
+  resetRedoStep();
+};
+
+const performUndo = () => {
+  // Check if there is at least one step to undo
+  if (undoStep > 0) {
+    // Save the current state of the grid to the redoStack
+    redoStack.push(getCurrentState());
+    incrementRedoStep();
+
+    // Loop over each square in the grid and update its background color
+    // to the value in the undoStack at the current undoStep
+    gridCells.forEach((square, index) => {
+      square.style.backgroundColor = undoStack[undoStep - 1][index];
+    });
+    undoStack.pop();
+    decrementUndoStep();
+  }
+};
+
+const performRedo = () => {
+  // Check if there is at least one step to redo
+  if (redoStep > 0) {
+    // Save the current state of the grid to the undoStack
+    saveState();
+
+    // Loop over each square in the grid and update its background color
+    // to the value in the redoStack at the current redoStep
+    gridCells.forEach((square, index) => {
+      square.style.backgroundColor = redoStack[redoStep - 1][index];
+    });
+    redoStack.pop();
+    decrementRedoStep();
+  }
 };
 
 /* ------------------------------------------------------------------------- */
@@ -373,14 +452,11 @@ const handleKeydown = (event) => {
     // "4" key
     document.getElementById("rainbow").checked = true;
   } else if (event.ctrlKey && event.shiftKey && event.code === "KeyZ") {
-    State.performRedo();
+    performRedo();
   } else if (event.ctrlKey && event.code === "KeyZ") {
-    State.performUndo();
+    performUndo();
   }
 };
-
-// handle keydown events
-document.addEventListener("keydown", handleKeydown);
 
 /* ------------------------------------------------------------------------- */
 /*                             Saving Image Logic                            */
@@ -409,8 +485,6 @@ const saveImage = () => {
       a.click();
     });
 };
-
-saveBtn.addEventListener("click", saveImage);
 
 /* ------------------------------------------------------------------------- */
 /*                               Color Swatches                              */
@@ -501,12 +575,71 @@ const toggleSettingPopup = () => {
   settingsPopup.classList.toggle("show");
 };
 
+/* ------------------------------------------------------------------------- */
+/*                             DARK & LIGHT MODE                             */
+/* ------------------------------------------------------------------------- */
+const modeSwitch = document.getElementById("mode-switch");
+const modeSwitchIcon = document.getElementById("mode-switch-icon");
+
+const toggleClass = (element, className) => {
+  element.classList.toggle(className);
+};
+
+// Check if dark mode is currently enabled
+let darkModeEnabled = localStorage.getItem("dark-mode") === "enabled";
+
+// Apply the dark-mode class to the document element
+// and toggle the icon classes based on the dark mode state
+document.documentElement.classList.toggle("dark-mode", darkModeEnabled);
+modeSwitchIcon.classList.toggle("fa-sun", !darkModeEnabled);
+modeSwitchIcon.classList.toggle("fa-moon", darkModeEnabled);
+
+modeSwitch.addEventListener("click", () => {
+  darkModeEnabled = localStorage.getItem("dark-mode") === "enabled";
+  // Toggle the dark-mode class on the document element
+  document.documentElement.classList.toggle("dark-mode");
+  // Toggle the icon classes
+  toggleClass(modeSwitchIcon, "fa-sun");
+  toggleClass(modeSwitchIcon, "fa-moon");
+  // Update the local storage value
+  if (darkModeEnabled) {
+    localStorage.removeItem("dark-mode");
+  } else {
+    localStorage.setItem("dark-mode", "enabled");
+  }
+});
+
+/* ------------------------------------------------------------------------- */
+/*                              Event Listeners                              */
+/* ------------------------------------------------------------------------- */
+
+/* ---------------------------------- Grid --------------------------------- */
+// disable right click inside the grid
+grid.addEventListener("contextmenu", (e) => e.preventDefault());
+
+clearGridButton.addEventListener("click", clearGrid);
+
+gridSizeRange.addEventListener("input", (event) => {
+  handleGridResize(event.target.value);
+});
+
+primaryColorInput.addEventListener("input", onPrimaryColorInputChange);
+
+// Add event listener to checkbox
+cellOutlineCheckbox.addEventListener("change", toggleCellOutline);
+mouseTrailToggle.addEventListener("change", handleMouseTrail);
+
+/* --------------------------------- State --------------------------------- */
+performUndoBtn.addEventListener("click", performUndo);
+performRedoBtn.addEventListener("click", performRedo);
+/* ------------------------------- Shortcuts ------------------------------- */
+// handle keydown events
+document.addEventListener("keydown", handleKeydown);
+/* ------------------------------- Save Image ------------------------------ */
+saveBtn.addEventListener("click", saveImage);
+/* -------------------------------- settings ------------------------------- */
 toggleSettingsBtn.addEventListener("click", toggleSettingPopup);
-
-/* ------------------------------------------------------------------------- */
-/*                                    Main                                   */
-/* ------------------------------------------------------------------------- */
-
+/* -------------------------------- On load -------------------------------- */
 window.addEventListener("load", () => {
   // Get the gird size from local storage if it exists
   if (localStorage.getItem("gird-size") !== null) {
