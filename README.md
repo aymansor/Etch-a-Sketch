@@ -15,6 +15,10 @@
 - Save drawings - You can save drawings and download them as a PNG
 
   <img src="https://raw.githubusercontent.com/aymansor/Etch-a-Sketch/main/img/features/save-demo.gif" width="600" />
+  
+- Undo/Redo support
+
+  <img src="https://raw.githubusercontent.com/aymansor/Etch-a-Sketch/main/img/features/undo-redo-demo.gif" width="600" />
 
 - Dark/Light mode
 
@@ -34,7 +38,6 @@
 - Color picker
 - Rainbow tool
 - Clear button
-- Undo/Redo support
 - Adjustable grid size
 - Responsive design
 - Touch support
