@@ -151,6 +151,11 @@ body {
   font-size: var(--fs-medium);
   color: var(--clr-black);
   background-color: hsl(var(--clr-neutral));
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 body {
@@ -348,16 +353,19 @@ hr {
   border-radius: inherit;
   transform: translate3d(0, 0.55em, -1em);
   transition: all 175ms cubic-bezier(0, 0, 1, 1);
+  -webkit-tap-highlight-color: transparent;
 }
 
-.btn:hover {
-  border: 2px solid hsl(var(--clr-accent));
-  color: hsl(var(--clr-accent));
-  background: hsl(var(--clr-primary));
-}
+@media (hover: hover) {
+  .btn:hover {
+    border: 2px solid hsl(var(--clr-accent));
+    color: hsl(var(--clr-accent));
+    background: hsl(var(--clr-primary));
+  }
 
-.btn:hover::before {
-  transform: translate3d(0, 0.65em, -1em);
+  .btn:hover::before {
+    transform: translate3d(0, 0.65em, -1em);
+  }
 }
 
 .btn:active {
