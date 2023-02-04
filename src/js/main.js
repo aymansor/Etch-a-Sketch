@@ -1,96 +1,328 @@
 "use strict";
 
-import * as State from "./grid-state.js";
+/* ------------------------------------------------------------------------- */
+/*                                DOM ELEMENTS                               */
+/* ------------------------------------------------------------------------- */
 
-// DOM Elements
-const grid = document.getElementById("grid");
-const clearGridButton = document.getElementById("clear-grid");
-const colorSelect = document.getElementById("color-select");
-const toggleGrid = document.getElementById("toggle-grid");
-const mouseTrailToggle = document.getElementById("mouse-trail-toggle");
+const grid = document.querySelector("#grid");
+const clearGridButton = document.querySelector("#clear-grid");
+const primaryColorInput = document.querySelector("#color-select");
+const cellOutlineCheckbox = document.querySelector("#toggle-grid");
+const mouseTrailToggle = document.querySelector("#mouse-trail-toggle");
+const saveBtn = document.querySelector("#save-btn");
+const gridSizeRange = document.querySelector("#grid-size-range");
 const tools = document.getElementsByName("mode");
-const saveBtn = document.getElementById("save-btn");
-const gridRange = document.getElementById("grid-size-range");
-const toggleBtn = document.querySelector("#toggle-settings");
+const toggleSettingsBtn = document.querySelector("#toggle-settings");
 const settingsPopup = document.querySelector("#settings-popup");
 
-const toggleOutlineChecked =
-  localStorage.getItem("toggleOutlineChecked") === "true";
-const toggleMouseTrailChecked =
-  localStorage.getItem("toggleMouseTrailChecked") === "true";
+/* ------------------------------------------------------------------------- */
+/*                              GLOBAL VARIABLES                             */
+/* ------------------------------------------------------------------------- */
 
-// Global Variables
+/**
+ * Stores the current grid size as a number
+ * @type {Number}
+ */
 let gridSize = 16;
-let gridBackgroundColor = window
-  .getComputedStyle(document.documentElement)
-  .getPropertyValue("--clr-grid");
-// TODO: move the grid logic out of main?
-export let gridSquares = [];
-let drawColor = colorSelect.value;
 
+/**
+ * Stores the current primary color as a hexadecimal string
+ * @type {String}
+ */
+let primaryColor = primaryColorInput.value;
+
+/**
+ * Stores the current background color for the grid squares as a hexadecimal string
+ * @type {String}
+ */
+let gridBackgroundColor = "#ffffff";
+
+/**
+ * An array that stores the individual grid cells in the grid
+ * @type {Array.<HTMLDivElement>}
+ */
+let gridCells = [];
+
+/* ------------------------------------------------------------------------- */
+/*                                 Grid Logic                                */
+/* ------------------------------------------------------------------------- */
+
+/* ------- Creating, clearing, deleting, and resizing the grid logic ------- */
+
+/**
+ * Creates a grid and appends it to the grid container.
+ */
 const CreateGrid = () => {
-  gridSquares = []; //clearing the gridSquares variable
+  // Clears the gridCells array before creating a new grid.
+  gridCells = [];
+
   for (let i = 0; i < gridSize * gridSize; i++) {
-    let square = document.createElement("div");
-    square.classList.add("grid-square");
-    square.style.backgroundColor = gridBackgroundColor;
-    square.style.width = `${100 / gridSize}%`;
+    const cell = document.createElement("div");
+    cell.classList.add("grid-square");
+    cell.style.backgroundColor = gridBackgroundColor;
+    cell.style.width = `${100 / gridSize}%`;
 
-    if (toggleGrid.checked) square.classList.add("grid-square-outline");
-
-    // Add mousedown event listener to each square
-    square.addEventListener("mousedown", (event) => {
-      // Saves the current state before preforming any actions
-      State.saveState();
-      gridAction(event);
-    });
-    // Add mouseover event listener to each square
-    square.addEventListener("mouseover", gridAction);
-
-    gridSquares.push(square);
-    grid.appendChild(square);
-  }
-};
-
-const gridAction = (event) => {
-  // Enable trailing effect when hovering over the grid.
-  // mouseTrail(event);
-
-  // check if left mouse button is pressed
-  if (event.buttons === 1) {
-    switch (getSelectedTool()) {
-      case "pencil":
-        event.target.style.backgroundColor = drawColor;
-        break;
-      case "eraser":
-        event.target.style.backgroundColor = gridBackgroundColor;
-        break;
-      case "picker":
-        selectColor(event.target);
-        break;
-      case "rainbow":
-        event.target.style.backgroundColor = getRandomColor();
-        break;
+    if (cellOutlineCheckbox.checked) {
+      cell.classList.add("grid-square-outline");
     }
-  }
-  // check if middle mouse is clicked
-  else if (event.button === 1) {
-    selectColor(event.target);
-  }
-  // check if left mouse button is held down
-  else if (event.buttons === 2) {
-    event.target.style.backgroundColor = gridBackgroundColor;
+
+    gridCells.push(cell);
+    grid.appendChild(cell);
   }
 };
 
-const mouseTrail = () => {
-  localStorage.setItem("toggleMouseTrailChecked", mouseTrailToggle.checked);
+/**
+ * Clears the grid and resets the undo/redo state history.
+ */
+const clearGrid = () => {
+  // Clears the undo/redo state history.
+  clearHistory();
+  // Resets the background color of all cells to the default grid background color.
+  gridCells.forEach((cell) => {
+    cell.style.backgroundColor = gridBackgroundColor;
+  });
+};
+
+const DeleteGrid = () => {
+  gridCells.forEach((cell) => {
+    cell.remove();
+  });
+  gridCells = [];
+};
+
+/**
+ * Handles the resizing of the grid.
+ *
+ * @param {Number} value - The new grid size value.
+ */
+const handleGridResize = (value) => {
+  clearHistory();
+
+  document.querySelector("#grid-size-text").value = `${value}x${value}`;
+  gridSize = Number(value);
+
+  localStorage.setItem("gird-size", gridSize);
+
+  DeleteGrid();
+  CreateGrid();
+};
+
+/* ----------------------------- Handle actions ---------------------------- */
+
+/**
+ * Handles the user actions on the grid.
+ * Saves the current state on pointerdown before preforming any actions.
+ * Then, delegates the action to either handleMouseActions or handleTouchActions.
+ * @param {PointerEvent} event - The pointer event object.
+ */
+const handleUserAction = (event) => {
+  // Save current state on first "pointerdown" event before performing actions.
+  if (event.type === "pointerdown") {
+    saveState();
+  }
+
+  if (event.pointerType === "mouse") {
+    handleMouseActions(event);
+  } else if (event.pointerType === "touch") {
+    handleTouchActions(event);
+  }
+};
+
+/**
+ * Handles mouse actions on the grid by delegating to specific tool handlers
+ * based on the mouse input pressed.
+ *
+ * @param {PointerEvent} event - The pointer event object.
+ */
+const handleMouseActions = (event) => {
+  // Return if the target cell is not a valid grid square.
+  const targetCell = event.target;
+  if (targetCell === null || !targetCell.classList.contains("grid-square")) {
+    return;
+  }
+
+  // Delegate event handling to the relevant tool function.
+  switch (event.buttons) {
+    // Left mouse button
+    case 1:
+      handleToolsActions(targetCell);
+      break;
+    // Right mouse button
+    case 2:
+      handleEraserTool(targetCell);
+      break;
+    // Middle mouse button
+    case 4:
+      handleColorPickerTool(targetCell);
+      break;
+    default:
+      break;
+  }
+};
+
+/**
+ * Handle touch actions on the grid.
+ *
+ * @param {PointerEvent} event - The pointer event object.
+ *
+ * @returns {undefined}
+ */
+const handleTouchActions = (event) => {
+  // Get the grid cell element based on the touch event's clientX and clientY
+  // coordinates. If the element is not found or is not a grid cell, return
+  // and do nothing.
+  const targetCell = document.elementFromPoint(event.clientX, event.clientY);
+  if (targetCell === null || !targetCell.classList.contains("grid-square")) {
+    return;
+  }
+
+  handleToolsActions(targetCell);
+};
+
+/**
+ * Handles tool actions on the grid by delegating to specific tool handlers
+ * based on the active tool.
+ *
+ * @param {HTMLElement} target - The target grid cell element.
+ */
+const handleToolsActions = (target) => {
+  // Delegate event handling to the relevant tool function.
+  switch (getActiveTool()) {
+    case "pencil":
+      handlePenTool(target);
+      break;
+    case "eraser":
+      handleEraserTool(target);
+      break;
+    case "picker":
+      handleColorPickerTool(target);
+      break;
+    case "rainbow":
+      handleRainbowTool(target);
+      break;
+  }
+};
+
+/* ------------------------------ Handle tools ----------------------------- */
+
+/**
+ * Changes the background color of the targeted cell to the current primary color.
+ * @param {HTMLElement} target - The targeted cell to change color
+ */
+const handlePenTool = (target) => {
+  target.style.backgroundColor = primaryColor;
+};
+
+/**
+ * Changes the background color of the targeted cell to the grid background color.
+ * @param {HTMLElement} target - The targeted cell to change color.
+ */
+const handleEraserTool = (target) => {
+  target.style.backgroundColor = gridBackgroundColor;
+};
+
+/**
+ * Changes the primary color and updates the primary color input, and changes the
+ * active tool to the pencil tool.
+ * @param {HTMLElement} target - The targeted cell to get the color from.
+ */
+const handleColorPickerTool = (target) => {
+  primaryColor = target.style.backgroundColor;
+  updatePrimaryColorInput();
+  changeActiveTool("pencil");
+};
+
+/**
+ * Changes the background color of the targeted cell to a random color.
+ * @param {HTMLElement} target - The targeted cell to change color.
+ */
+const handleRainbowTool = (target) => {
+  target.style.backgroundColor = getRandomColor();
+};
+
+/* ------------------------------ Tools Utils ------------------------------ */
+
+/**
+ * Returns the value of the selected active tool.
+ * @returns {String} The value of the selected active tool or undefined if no tool is selected.
+ */
+const getActiveTool = () => {
+  const activeTool = [...tools].find((tool) => tool.checked);
+  return activeTool ? activeTool.value : undefined;
+};
+
+/**
+ * Changes the active tool to the one passed to the function.
+ * @param {String} toolName - The name of the tool to change to.
+ */
+const changeActiveTool = (toolName) => {
+  tools.forEach(
+    (tool) => (tool.checked = tool.value === toolName ? true : false)
+  );
+};
+
+/**
+ * Updates the primary color input to the current primary color
+ */
+const updatePrimaryColorInput = () => {
+  primaryColorInput.value = rgbToHex(primaryColor);
+};
+
+/**
+ * Updates the primary color to the primary color input value
+ */
+const onPrimaryColorInputChange = () => {
+  primaryColor = primaryColorInput.value;
+};
+
+/**
+ *
+ * @param {String} rgb - An RGB color value string.
+ * @returns The hexadecimal equivalent for the passed RGB value as a string.
+ */
+const rgbToHex = (rgb) => {
+  return (
+    "#" +
+    rgb
+      .slice(4, -1)
+      .split(",")
+      .map((x) => (+x).toString(16).padStart(2, 0))
+      .join("")
+  );
+};
+
+/**
+ * Returns a random hexadecimal color
+ * @returns A random hexadecimal color as a string
+ */
+const getRandomColor = () => {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
+/* ------------------------------ Grid effects ----------------------------- */
+
+const toggleCellOutline = () => {
+  const isChecked = cellOutlineCheckbox.checked;
+  localStorage.setItem("cell-outline-checked", isChecked);
+
+  gridCells.forEach((cell) => {
+    cell.classList.toggle("grid-square-outline", isChecked);
+  });
+};
+
+const handleMouseTrail = () => {
+  localStorage.setItem("mouse-trail-checked", mouseTrailToggle.checked);
   if (mouseTrailToggle.checked) {
-    gridSquares.forEach((element) => {
+    gridCells.forEach((element) => {
       element.addEventListener("mouseover", mouseTrailEffect);
     });
   } else {
-    gridSquares.forEach((element) => {
+    gridCells.forEach((element) => {
       element.removeEventListener("mouseover", mouseTrailEffect);
       element.classList.remove("single");
     });
@@ -105,84 +337,106 @@ const mouseTrailEffect = (event) => {
   );
 };
 
-const selectColor = (square) => {
-  drawColor = square.style.backgroundColor;
-  colorSelect.value = rgbToHex(drawColor);
-  tools.forEach((tool) => {
-    if (tool.value === "pencil") {
-      tool.checked = true;
-    }
-    if (tool.value === "picker") {
-      tool.checked = false;
-    }
-  });
+/* ------------------------------------------------------------------------- */
+/*                                STATE LOGIC                                */
+/* ------------------------------------------------------------------------- */
+
+const performUndoBtn = document.querySelector("#perform-undo-btn");
+const performRedoBtn = document.querySelector("#perform-redo-btn");
+const undoRedoStepsLabels = document.querySelectorAll(".undo-redo-steps");
+
+let undoStack = [];
+let undoStep = 0;
+let redoStack = [];
+let redoStep = 0;
+
+const updateUndoRedoStepLabel = (index, step) => {
+  undoRedoStepsLabels[index].textContent = step;
 };
 
-const getSelectedTool = () => {
-  for (let i = 0; i < tools.length; i++) {
-    if (tools[i].checked) {
-      return tools[i].value;
-    }
+const incrementUndoStep = () => {
+  undoStep++;
+  updateUndoRedoStepLabel(0, undoStep);
+};
+
+const decrementUndoStep = () => {
+  undoStep--;
+  updateUndoRedoStepLabel(0, undoStep);
+};
+
+const resetUndoStep = () => {
+  undoStack = [];
+  undoStep = 0;
+  updateUndoRedoStepLabel(0, undoStep);
+};
+
+const incrementRedoStep = () => {
+  redoStep++;
+  updateUndoRedoStepLabel(1, redoStep);
+};
+
+const decrementRedoStep = () => {
+  redoStep--;
+  updateUndoRedoStepLabel(1, redoStep);
+};
+
+const resetRedoStep = () => {
+  redoStack = [];
+  redoStep = 0;
+  updateUndoRedoStepLabel(1, redoStep);
+};
+
+const getCurrentState = () => {
+  return gridCells.map((square) => square.style.backgroundColor);
+};
+
+// Save current state
+const saveState = () => {
+  undoStack.push(getCurrentState());
+  incrementUndoStep();
+};
+
+const clearHistory = () => {
+  resetUndoStep();
+  resetRedoStep();
+};
+
+const performUndo = () => {
+  // Check if there is at least one step to undo
+  if (undoStep > 0) {
+    // Save the current state of the grid to the redoStack
+    redoStack.push(getCurrentState());
+    incrementRedoStep();
+
+    // Loop over each square in the grid and update its background color
+    // to the value in the undoStack at the current undoStep
+    gridCells.forEach((square, index) => {
+      square.style.backgroundColor = undoStack[undoStep - 1][index];
+    });
+    undoStack.pop();
+    decrementUndoStep();
   }
 };
 
-const getRandomColor = () => {
-  const letters = "0123456789ABCDEF";
-  let color = "#";
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};
+const performRedo = () => {
+  // Check if there is at least one step to redo
+  if (redoStep > 0) {
+    // Save the current state of the grid to the undoStack
+    saveState();
 
-const rgbToHex = (rgb) => {
-  return (
-    "#" +
-    rgb
-      .slice(4, -1)
-      .split(",")
-      .map((x) => (+x).toString(16).padStart(2, 0))
-      .join("")
-  );
-};
-
-const clearGrid = () => {
-  State.clearHistory();
-  // Set the background color of all grid squares to the gridBackgroundColor variable
-  gridSquares.forEach((element) => {
-    element.style.backgroundColor = gridBackgroundColor;
-  });
-};
-
-const RemoveGrid = () => {
-  gridSquares.forEach((item) => {
-    item.remove();
-  });
-  gridSquares = []; //clearing the gridSquares variable
-};
-
-// Function to add or remove outline class based on checkbox state
-const toggleOutline = () => {
-  localStorage.setItem("toggleOutlineChecked", toggleGrid.checked);
-  if (toggleGrid.checked) {
-    gridSquares.forEach((square) =>
-      square.classList.add("grid-square-outline")
-    );
-  } else {
-    gridSquares.forEach((square) =>
-      square.classList.remove("grid-square-outline")
-    );
+    // Loop over each square in the grid and update its background color
+    // to the value in the redoStack at the current redoStep
+    gridCells.forEach((square, index) => {
+      square.style.backgroundColor = redoStack[redoStep - 1][index];
+    });
+    redoStack.pop();
+    decrementRedoStep();
   }
 };
 
-const onGridChangeRange = (value) => {
-  State.clearHistory();
-  document.getElementById("grid-size-text").value = `${value}x${value}`;
-  gridSize = Number(value);
-  localStorage.setItem("gridSize", gridSize);
-  RemoveGrid();
-  CreateGrid();
-};
+/* ------------------------------------------------------------------------- */
+/*                                 Shortcuts                                 */
+/* ------------------------------------------------------------------------- */
 
 const handleKeydown = (event) => {
   if (event.keyCode === 49) {
@@ -198,11 +452,15 @@ const handleKeydown = (event) => {
     // "4" key
     document.getElementById("rainbow").checked = true;
   } else if (event.ctrlKey && event.shiftKey && event.code === "KeyZ") {
-    State.performRedo();
+    performRedo();
   } else if (event.ctrlKey && event.code === "KeyZ") {
-    State.performUndo();
+    performUndo();
   }
 };
+
+/* ------------------------------------------------------------------------- */
+/*                             Saving Image Logic                            */
+/* ------------------------------------------------------------------------- */
 
 const saveImage = () => {
   domtoimage
@@ -228,8 +486,12 @@ const saveImage = () => {
     });
 };
 
+/* ------------------------------------------------------------------------- */
+/*                               Color Swatches                              */
+/* ------------------------------------------------------------------------- */
+
 // [Color Swatches]
-const colors = new Map([
+const swatches = new Map([
   ["pixel", ["#8BC34A", "#FFC107", "#03A9F4", "#009688", "#E91E63", "#9C27B0"]],
 
   ["nord", ["#BF616A", "#D08770", "#EBCB8B", "#A3BE8C", "#B48EAD", "#88C0D0"]],
@@ -248,20 +510,20 @@ const swatchColorsContainer = document.querySelector(
   "#swatch-colors-container"
 );
 const selectedSwatchName = document.getElementById("selected-swatch-name");
-const swatchesKeys = Array.from(colors.keys());
-const swatchesValues = Array.from(colors.values());
+const swatchesKeys = Array.from(swatches.keys());
+const swatchesValues = Array.from(swatches.values());
 let swatchCurrentIndex = 0;
 
 const getClickedSwatchColor = (event) => {
-  drawColor = event.target.style.backgroundColor;
-  colorSelect.value = rgbToHex(drawColor);
+  primaryColor = event.target.style.backgroundColor;
+  primaryColorInput.value = rgbToHex(primaryColor);
 };
 
 const createColorSwatch = () => {
   // get the first swatch key
-  const firstKey = Array.from(colors.keys())[0];
+  const firstKey = Array.from(swatches.keys())[0];
 
-  colors.get(firstKey).forEach((color) => {
+  swatches.get(firstKey).forEach((color) => {
     const swatchColor = document.createElement("div");
     swatchColor.classList.add("swatch-color");
     swatchColor.style.backgroundColor = color;
@@ -270,6 +532,14 @@ const createColorSwatch = () => {
   });
 
   selectedSwatchName.textContent = swatchesKeys[swatchCurrentIndex];
+
+  document
+    .querySelector("#swatch-left-arrow")
+    .addEventListener("click", handleSwatchLeftArrow);
+
+  document
+    .querySelector("#swatch-right-arrow")
+    .addEventListener("click", handleSwatchRightArrow);
 };
 
 const swapSwatches = () => {
@@ -281,69 +551,115 @@ const swapSwatches = () => {
   selectedSwatchName.textContent = swatchesKeys[swatchCurrentIndex];
 };
 
-// Main function
-const main = () => {
-  // disable right click inside the grid
-  grid.addEventListener("contextmenu", (e) => e.preventDefault());
-  // handle keydown events
-  document.addEventListener("keydown", handleKeydown);
-  saveBtn.addEventListener("click", saveImage);
-
-  createColorSwatch();
-
-  document.querySelector("#swatch-left-arrow").addEventListener("click", () => {
-    swatchCurrentIndex--;
-    if (swatchCurrentIndex < 0) {
-      swatchCurrentIndex = swatchesKeys.length - 1;
-    }
-    swapSwatches();
-  });
-
-  document
-    .querySelector("#swatch-right-arrow")
-    .addEventListener("click", () => {
-      swatchCurrentIndex++;
-      if (swatchCurrentIndex >= swatchesKeys.length) {
-        swatchCurrentIndex = 0;
-      }
-      swapSwatches();
-    });
-
-  // Add a click event listener to the button
-  clearGridButton.addEventListener("click", clearGrid);
-  colorSelect.addEventListener("input", function () {
-    drawColor = this.value;
-  });
-
-  // when the page load check if the toggleGrid was enabled before
-  window.addEventListener("load", () => {
-    if (localStorage.getItem("gridSize") !== null) {
-      gridSize = localStorage.getItem("gridSize");
-    }
-    gridRange.value = gridSize;
-    document.getElementById("grid-size-text").value = `${gridSize}x${gridSize}`;
-
-    // create the grid
-    CreateGrid();
-
-    toggleGrid.checked = toggleOutlineChecked;
-    toggleOutline();
-
-    mouseTrailToggle.checked = toggleMouseTrailChecked;
-    mouseTrail();
-  });
-
-  // Add event listener to checkbox
-  toggleGrid.addEventListener("change", toggleOutline);
-  mouseTrailToggle.addEventListener("change", mouseTrail);
-
-  gridRange.addEventListener("input", (event) => {
-    onGridChangeRange(event.target.value);
-  });
-
-  toggleBtn.addEventListener("click", function () {
-    settingsPopup.classList.toggle("show");
-  });
+const handleSwatchLeftArrow = () => {
+  swatchCurrentIndex--;
+  if (swatchCurrentIndex < 0) {
+    swatchCurrentIndex = swatchesKeys.length - 1;
+  }
+  swapSwatches();
 };
 
-main();
+const handleSwatchRightArrow = () => {
+  swatchCurrentIndex++;
+  if (swatchCurrentIndex >= swatchesKeys.length) {
+    swatchCurrentIndex = 0;
+  }
+  swapSwatches();
+};
+
+/* ------------------------------------------------------------------------- */
+/*                               SETTINGS POPUP                              */
+/* ------------------------------------------------------------------------- */
+
+const toggleSettingPopup = () => {
+  settingsPopup.classList.toggle("show");
+};
+
+/* ------------------------------------------------------------------------- */
+/*                             DARK & LIGHT MODE                             */
+/* ------------------------------------------------------------------------- */
+const modeSwitch = document.getElementById("mode-switch");
+const modeSwitchIcon = document.getElementById("mode-switch-icon");
+
+const toggleClass = (element, className) => {
+  element.classList.toggle(className);
+};
+
+// Check if dark mode is currently enabled
+let darkModeEnabled = localStorage.getItem("dark-mode") === "enabled";
+
+// Apply the dark-mode class to the document element
+// and toggle the icon classes based on the dark mode state
+document.documentElement.classList.toggle("dark-mode", darkModeEnabled);
+modeSwitchIcon.classList.toggle("fa-sun", !darkModeEnabled);
+modeSwitchIcon.classList.toggle("fa-moon", darkModeEnabled);
+
+modeSwitch.addEventListener("click", () => {
+  darkModeEnabled = localStorage.getItem("dark-mode") === "enabled";
+  // Toggle the dark-mode class on the document element
+  document.documentElement.classList.toggle("dark-mode");
+  // Toggle the icon classes
+  toggleClass(modeSwitchIcon, "fa-sun");
+  toggleClass(modeSwitchIcon, "fa-moon");
+  // Update the local storage value
+  if (darkModeEnabled) {
+    localStorage.removeItem("dark-mode");
+  } else {
+    localStorage.setItem("dark-mode", "enabled");
+  }
+});
+
+/* ------------------------------------------------------------------------- */
+/*                              Event Listeners                              */
+/* ------------------------------------------------------------------------- */
+
+/* ---------------------------------- Grid --------------------------------- */
+// disable right click inside the grid
+grid.addEventListener("contextmenu", (e) => e.preventDefault());
+
+clearGridButton.addEventListener("click", clearGrid);
+
+gridSizeRange.addEventListener("input", (event) => {
+  handleGridResize(event.target.value);
+});
+
+primaryColorInput.addEventListener("input", onPrimaryColorInputChange);
+
+// Add event listener to checkbox
+cellOutlineCheckbox.addEventListener("change", toggleCellOutline);
+mouseTrailToggle.addEventListener("change", handleMouseTrail);
+
+/* --------------------------------- State --------------------------------- */
+performUndoBtn.addEventListener("click", performUndo);
+performRedoBtn.addEventListener("click", performRedo);
+/* ------------------------------- Shortcuts ------------------------------- */
+// handle keydown events
+document.addEventListener("keydown", handleKeydown);
+/* ------------------------------- Save Image ------------------------------ */
+saveBtn.addEventListener("click", saveImage);
+/* -------------------------------- settings ------------------------------- */
+toggleSettingsBtn.addEventListener("click", toggleSettingPopup);
+/* -------------------------------- On load -------------------------------- */
+window.addEventListener("load", () => {
+  // Get the gird size from local storage if it exists
+  if (localStorage.getItem("gird-size") !== null) {
+    gridSize = localStorage.getItem("gird-size");
+  }
+  gridSizeRange.value = gridSize;
+  document.getElementById("grid-size-text").value = `${gridSize}x${gridSize}`;
+
+  // Create the grid
+  CreateGrid();
+  grid.addEventListener("pointerdown", handleUserAction);
+  grid.addEventListener("pointermove", handleUserAction);
+
+  cellOutlineCheckbox.checked =
+    localStorage.getItem("cell-outline-checked") === "true";
+  toggleCellOutline();
+
+  mouseTrailToggle.checked =
+    localStorage.getItem("mouse-trail-checked") === "true";
+  handleMouseTrail();
+
+  createColorSwatch();
+});

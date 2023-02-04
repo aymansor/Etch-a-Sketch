@@ -52,7 +52,7 @@
   /* --btn-size: 3rem; */
 
   --grid-size: 35vw;
-  --grid-padding: var(--spacing-small);
+  --grid-padding: 0;
   --clr-picker-container-size: 4rem;
 }
 
@@ -151,6 +151,11 @@ body {
   font-size: var(--fs-medium);
   color: var(--clr-black);
   background-color: hsl(var(--clr-neutral));
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 body {
@@ -160,6 +165,44 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+/* =================================================== */
+/* noscript */
+/* =================================================== */
+#noscript-warning {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--grid-size);
+  max-width: 500px;
+  color: hsl(var(--clr-primary));
+  background-color: hsl(var(--clr-accent));
+  border: 2px solid hsl(var(--clr-primary));
+  border-radius: var(--border-radius-medium);
+  text-align: center;
+  padding: var(--spacing-large);
+  font-size: var(--fs-large);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  z-index: 100;
+}
+
+#noscript-warning img {
+  margin-top: var(--spacing-medium);
+  border-radius: var(--border-radius-medium);
+  border: 2px solid hsl(var(--clr-primary));
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
+#noscript-warning figcaption {
+  margin-top: var(--spacing-small);
+  font-size: var(--fs-medium);
+  float: left;
 }
 
 /* =================================================== */
@@ -332,6 +375,7 @@ hr {
   background-color: hsl(var(--clr-accent));
   transform-style: preserve-3d;
   transition: all 175ms cubic-bezier(0, 0, 1, 1);
+  touch-action: none;
 }
 
 .btn::before {
@@ -347,16 +391,19 @@ hr {
   border-radius: inherit;
   transform: translate3d(0, 0.55em, -1em);
   transition: all 175ms cubic-bezier(0, 0, 1, 1);
+  -webkit-tap-highlight-color: transparent;
 }
 
-.btn:hover {
-  border: 2px solid hsl(var(--clr-accent));
-  color: hsl(var(--clr-accent));
-  background: hsl(var(--clr-primary));
-}
+@media (hover: hover) {
+  .btn:hover {
+    border: 2px solid hsl(var(--clr-accent));
+    color: hsl(var(--clr-accent));
+    background: hsl(var(--clr-primary));
+  }
 
-.btn:hover::before {
-  transform: translate3d(0, 0.65em, -1em);
+  .btn:hover::before {
+    transform: translate3d(0, 0.65em, -1em);
+  }
 }
 
 .btn:active {
@@ -404,6 +451,7 @@ hr {
   margin: var(--spacing-medium);
   padding: var(--grid-padding);
   user-select: none;
+  touch-action: none;
 }
 
 .grid-square {
