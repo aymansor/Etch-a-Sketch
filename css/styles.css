@@ -19,10 +19,6 @@
 
   /* TODO: add outline color, maybe? */
 
-  /* temp colors for text */
-  --clr-white: white;
-  --clr-black: black;
-
   /* Font Family */
   --ff-primary: "Dosis", sans-serif;
   --ff-secondary: "Niconne", cursive;
@@ -58,16 +54,11 @@
 
 .dark-mode {
   /* Colors */
-  /* 60% */
-  --clr-neutral: 201, 39%, 13%;
-  /* 30% */
-  --clr-primary: 190, 89%, 75%;
-  /* 10% */
-  --clr-accent: 44, 98%, 51%;
-
-  --clr-btn: var(--clr-primary);
+  --clr-neutral: 224, 26%, 20%;
+  --clr-primary: 215, 20%, 88%;
+  --clr-accent: 17, 26%, 59%;
+  /* --clr-btn: var(--clr-neutral); */
 }
-
 /* =================================================== */
 /* RESET CSS */
 /* https://piccalil.li/blog/a-modern-css-reset */
@@ -149,7 +140,7 @@ html {
 body {
   font-family: var(--ff-primary);
   font-size: var(--fs-medium);
-  color: var(--clr-black);
+  color: hsl(var(--clr-primary));
   background-color: hsl(var(--clr-neutral));
 
   -webkit-user-select: none;
@@ -245,7 +236,7 @@ footer {
 }
 
 #title {
-  color: hsl(var(--clr-neutral));
+  color: hsl(var(--clr-primary));
   font-size: var(--fs-large);
   padding: var(--spacing-small) var(--spacing-medium);
   font-family: var(--ff-secondary);
@@ -257,7 +248,7 @@ footer {
   border: 4px solid hsl(var(--clr-accent));
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.35) inset,
     0 0 0 2px hsl(var(--clr-primary));
-  background-color: hsl(var(--clr-primary));
+  background-color: hsl(var(--clr-neutral));
 }
 
 #settings-popup {
@@ -397,7 +388,7 @@ hr {
 @media (hover: hover) {
   .btn:hover {
     border: 2px solid hsl(var(--clr-accent));
-    color: hsl(var(--clr-accent));
+    color: hsl(var(--clr-neutral));
     background: hsl(var(--clr-primary));
   }
 
@@ -526,7 +517,7 @@ hr {
 
 #selected-swatch-name {
   border-radius: var(--border-radius-small);
-  color: hsl(var(--clr-neutral));
+  color: hsl(var(--clr-primary));
   width: 100%;
 }
 
@@ -666,7 +657,7 @@ input[type="radio"] + span::before {
 
 input[type="radio"] + span:hover {
   border: 2px solid hsl(var(--clr-accent));
-  color: hsl(var(--clr-accent));
+  color: hsl(var(--clr-neutral));
   background: hsl(var(--clr-primary));
 }
 
@@ -685,7 +676,7 @@ input[type="radio"] + span:active::before {
 }
 
 input[type="radio"]:checked + span {
-  color: hsl(var(--clr-accent));
+  color: hsl(var(--clr-neutral));
   background-color: hsl(var(--clr-primary));
   box-shadow: 0 2px 0 1px hsl(var(--clr-accent));
 }
@@ -750,7 +741,7 @@ input[type="range"]::-webkit-slider-thumb {
   background-color: hsl(var(--clr-accent));
   cursor: pointer;
   border: 2px solid hsl(var(--clr-primary));
-  box-shadow: 0 0 3px hsl(var(--clr-primary)), 0 0 5px hsl(var(--clr-primary));
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.35), 0 0 10px -2px rgba(0, 0, 0, 0.35) inset;
   transform: translateY(-25%);
 }
 
@@ -795,6 +786,7 @@ input[type="range"]::-moz-range-track {
   width: 6rem;
   margin-left: var(--spacing-small);
   color: hsl(var(--clr-neutral));
+  background-color: hsl(var(--clr-primary));
   text-align: center;
   letter-spacing: var(--spacing-small);
   border-radius: 0 var(--border-radius-medium) var(--border-radius-medium) 0;
