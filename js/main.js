@@ -43,6 +43,12 @@ let gridBackgroundColor = "#ffffff";
  */
 let gridCells = [];
 
+/**
+ * Stores the last cell element for the lighten/darken tools
+ * @type {<HTMLDivElement>}
+ */
+let lastCell = null;
+
 /* ------------------------------------------------------------------------- */
 /*                                 Grid Logic                                */
 /* ------------------------------------------------------------------------- */
@@ -119,6 +125,10 @@ const handleUserAction = (event) => {
   // Save current state on first "pointerdown" event before performing actions.
   if (event.type === "pointerdown") {
     saveState();
+
+    // on pointerdown, set the lastCell to null so that each time the user clicks on
+    // the same cell, it can get lightened. lastCell is used on handleLightenTool
+    lastCell = null;
   }
 
   if (event.pointerType === "mouse") {
@@ -149,7 +159,11 @@ const handleMouseActions = (event) => {
       break;
     // Right mouse button
     case 2:
-      handleEraserTool(targetCell);
+      if (getActiveTool() === "lighten-darken") {
+        handleLightenDarkenTool(targetCell, "darken", -5);
+      } else {
+        handleEraserTool(targetCell);
+      }
       break;
     // Middle mouse button
     case 4:
@@ -200,6 +214,9 @@ const handleToolsActions = (target) => {
     case "rainbow":
       handleRainbowTool(target);
       break;
+    case "lighten-darken":
+      handleLightenDarkenTool(target, "lighten", 5);
+      break;
   }
 };
 
@@ -238,6 +255,45 @@ const handleColorPickerTool = (target) => {
  */
 const handleRainbowTool = (target) => {
   target.style.backgroundColor = getRandomColor();
+};
+
+/**
+ *
+ * @param {HTMLElement} target - The targeted cell to change color.
+ * @param {String} operation - Lighten or darken
+ * @param {Number} percentage - The amount to lighten or darken the cell
+ * @returns
+ */
+const handleLightenDarkenTool = (target, operation, percentage) => {
+  // if the lastCell is the same as the target just return and do nothing
+  if (lastCell === target) return;
+
+  // update the lastCell to the target
+  lastCell = target;
+
+  const originalColor = target.style.backgroundColor;
+
+  // Extract the red, green, and blue values from the RGB string
+  let [red, green, blue] = originalColor.match(/\d+/g).map((x) => parseInt(x));
+
+  // Return early if the input RGB value is already white for the lighten tool
+  // or black for the darken tool to avoid unnecessary calculations
+  if (operation === "lighten" && red === 255 && green === 255 && blue === 255)
+    return;
+
+  if (operation === "darken" && red === 0 && green === 0 && blue === 0) return;
+
+  // Convert the RGB values to HSL
+  const hsl = rgbToHsl(red, green, blue);
+
+  let h = hsl[0];
+  let s = hsl[1];
+  let l = hsl[2];
+
+  // Increase or decrease the lightness by the specified percentage
+  l = Math.min(100, Math.max(0, l + percentage));
+
+  target.style.backgroundColor = "hsl(" + h + "," + s + "%," + l + "%)";
 };
 
 /* ------------------------------ Tools Utils ------------------------------ */
@@ -289,6 +345,51 @@ const rgbToHex = (rgb) => {
       .map((x) => (+x).toString(16).padStart(2, 0))
       .join("")
   );
+};
+
+// Great explanation on how to convert RGB to HSL
+// https://stackoverflow.com/questions/39118528/rgb-to-hsl-conversion
+/**
+ * Convert RGB color to HSL
+ * @param {Number} r - Red value
+ * @param {Number} g - Green value
+ * @param {Number} b - Blue value
+ * @returns The HSL equivalent for the passed RGB value as an array.
+ */
+const rgbToHsl = (r, g, b) => {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+
+  let h,
+    s,
+    l = (max + min) / 2;
+
+  if (max === min) {
+    h = s = 0;
+  } else {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
+    }
+
+    h /= 6;
+  }
+
+  return [h * 360, s * 100, l * 100];
 };
 
 /**
@@ -451,6 +552,9 @@ const handleKeydown = (event) => {
   } else if (event.keyCode === 52) {
     // "4" key
     document.getElementById("rainbow").checked = true;
+  } else if (event.keyCode === 53) {
+    // "5" key
+    document.getElementById("lighten-darken").checked = true;
   } else if (event.ctrlKey && event.shiftKey && event.code === "KeyZ") {
     performRedo();
   } else if (event.ctrlKey && event.code === "KeyZ") {
