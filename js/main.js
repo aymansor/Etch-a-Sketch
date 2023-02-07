@@ -38,10 +38,10 @@ let primaryColor = primaryColorInput.value;
 let gridBackgroundColor = "#ffffff";
 
 /**
- * An array that stores the individual grid cells in the grid
- * @type {Array.<HTMLDivElement>}
+ * A matrix that stores the individual grid cells in the grid
+ * @type {Array.<Array.<HTMLDivElement>>}
  */
-let gridCells = [];
+let gridMatrix = [];
 
 /**
  * Stores the last cell element
@@ -64,21 +64,24 @@ let isMouseDown = false;
  * Creates a grid and appends it to the grid container.
  */
 const CreateGrid = () => {
-  // Clears the gridCells array before creating a new grid.
-  gridCells = [];
+  // Clears the matrix before creating a new grid.
+  gridMatrix = [];
 
-  for (let i = 0; i < gridSize * gridSize; i++) {
-    const cell = document.createElement("div");
-    cell.classList.add("grid-square");
-    cell.style.backgroundColor = gridBackgroundColor;
-    cell.style.width = `${100 / gridSize}%`;
+  for (let i = 0; i < gridSize; i++) {
+    gridMatrix[i] = [];
+    for (let j = 0; j < gridSize; j++) {
+      const cell = document.createElement("div");
+      cell.classList.add("grid-square");
+      cell.style.backgroundColor = gridBackgroundColor;
+      cell.style.width = `${100 / gridSize}%`;
 
-    if (cellOutlineCheckbox.checked) {
-      cell.classList.add("grid-square-outline");
+      if (cellOutlineCheckbox.checked) {
+        cell.classList.add("grid-square-outline");
+      }
+      cell.dataset.index = `${i}x${j}`;
+      gridMatrix[i][j] = cell;
+      grid.appendChild(cell);
     }
-
-    gridCells.push(cell);
-    grid.appendChild(cell);
   }
 };
 
@@ -89,16 +92,20 @@ const clearGrid = () => {
   // Clears the undo/redo state history.
   clearHistory();
   // Resets the background color of all cells to the default grid background color.
-  gridCells.forEach((cell) => {
+  forEachCell((cell) => {
     cell.style.backgroundColor = gridBackgroundColor;
   });
 };
 
+/**
+ * A function that removes each cell from the grid and clears the grid matrix.
+ */
 const DeleteGrid = () => {
-  gridCells.forEach((cell) => {
+  forEachCell((cell) => {
     cell.remove();
   });
-  gridCells = [];
+
+  gridMatrix = [];
 };
 
 /**
@@ -303,6 +310,19 @@ const handleLightenDarkenTool = (target, operation, percentage) => {
 /* ------------------------------ Tools Utils ------------------------------ */
 
 /**
+ * A helper function that applies the given callback function to each cell in the grid matrix.
+ *
+ * @param {function} callback - The callback function to be applied to each cell.
+ */
+const forEachCell = (callback) => {
+  gridMatrix.forEach((row) => {
+    row.forEach((cell) => {
+      callback(cell);
+    });
+  });
+};
+
+/**
  * Returns the value of the selected active tool.
  * @returns {String} The value of the selected active tool or undefined if no tool is selected.
  */
@@ -415,7 +435,7 @@ const toggleCellOutline = () => {
   const isChecked = cellOutlineCheckbox.checked;
   localStorage.setItem("cell-outline-checked", isChecked);
 
-  gridCells.forEach((cell) => {
+  forEachCell((cell) => {
     cell.classList.toggle("grid-square-outline", isChecked);
   });
 };
@@ -423,13 +443,13 @@ const toggleCellOutline = () => {
 const handleMouseTrail = () => {
   localStorage.setItem("mouse-trail-checked", mouseTrailToggle.checked);
   if (mouseTrailToggle.checked) {
-    gridCells.forEach((element) => {
-      element.addEventListener("mouseover", mouseTrailEffect);
+    forEachCell((cell) => {
+      cell.addEventListener("mouseover", mouseTrailEffect);
     });
   } else {
-    gridCells.forEach((element) => {
-      element.removeEventListener("mouseover", mouseTrailEffect);
-      element.classList.remove("single");
+    forEachCell((cell) => {
+      cell.removeEventListener("mouseover", mouseTrailEffect);
+      cell.classList.remove("single");
     });
   }
 };
@@ -492,7 +512,7 @@ const resetRedoStep = () => {
 };
 
 const getCurrentState = () => {
-  return gridCells.map((square) => square.style.backgroundColor);
+  return gridMatrix.map((row) => row.map((cell) => cell.style.backgroundColor));
 };
 
 // Save current state
@@ -515,9 +535,12 @@ const performUndo = () => {
 
     // Loop over each square in the grid and update its background color
     // to the value in the undoStack at the current undoStep
-    gridCells.forEach((square, index) => {
-      square.style.backgroundColor = undoStack[undoStep - 1][index];
+    undoStack[undoStep - 1].forEach((row, i) => {
+      row.forEach((color, j) => {
+        gridMatrix[i][j].style.backgroundColor = color;
+      });
     });
+
     undoStack.pop();
     decrementUndoStep();
   }
@@ -531,9 +554,12 @@ const performRedo = () => {
 
     // Loop over each square in the grid and update its background color
     // to the value in the redoStack at the current redoStep
-    gridCells.forEach((square, index) => {
-      square.style.backgroundColor = redoStack[redoStep - 1][index];
+    redoStack[redoStep - 1].forEach((row, i) => {
+      row.forEach((color, j) => {
+        gridMatrix[i][j].style.backgroundColor = color;
+      });
     });
+
     redoStack.pop();
     decrementRedoStep();
   }
