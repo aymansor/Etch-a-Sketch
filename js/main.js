@@ -45,9 +45,14 @@ let gridCells = [];
 
 /**
  * Stores the last cell element for the lighten/darken tools
- * @type {<HTMLDivElement>}
+ * @type {Object.<HTMLDivElement>}
  */
 let lastCell = null;
+
+/**
+ * @type {boolean}
+ */
+let isMouseDown = false;
 
 /* ------------------------------------------------------------------------- */
 /*                                 Grid Logic                                */
@@ -754,8 +759,21 @@ window.addEventListener("load", () => {
 
   // Create the grid
   CreateGrid();
-  grid.addEventListener("pointerdown", handleUserAction);
-  grid.addEventListener("pointermove", handleUserAction);
+
+  grid.addEventListener("pointerdown", (event) => {
+    isMouseDown = true;
+    handleUserAction(event);
+  });
+
+  grid.addEventListener("pointermove", (event) => {
+    if (isMouseDown) {
+      handleUserAction(event);
+    }
+  });
+
+  grid.addEventListener("pointerup", () => {
+    isMouseDown = false;
+  });
 
   cellOutlineCheckbox.checked =
     localStorage.getItem("cell-outline-checked") === "true";
