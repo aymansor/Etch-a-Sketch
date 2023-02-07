@@ -44,7 +44,7 @@ let gridBackgroundColor = "#ffffff";
 let gridCells = [];
 
 /**
- * Stores the last cell element for the lighten/darken tools
+ * Stores the last cell element
  * @type {Object.<HTMLDivElement>}
  */
 let lastCell = null;
@@ -132,9 +132,14 @@ const handleUserAction = (event) => {
     saveState();
 
     // on pointerdown, set the lastCell to null so that each time the user clicks on
-    // the same cell, it can get lightened. lastCell is used on handleLightenTool
+    // the same cell, it can be modified
     lastCell = null;
   }
+
+  // if the lastCell is the same as the target just return and do nothing
+  if (lastCell === event.target) return;
+
+  lastCell = event.target;
 
   if (event.pointerType === "mouse") {
     handleMouseActions(event);
@@ -270,12 +275,6 @@ const handleRainbowTool = (target) => {
  * @returns
  */
 const handleLightenDarkenTool = (target, operation, percentage) => {
-  // if the lastCell is the same as the target just return and do nothing
-  if (lastCell === target) return;
-
-  // update the lastCell to the target
-  lastCell = target;
-
   const originalColor = target.style.backgroundColor;
 
   // Extract the red, green, and blue values from the RGB string
