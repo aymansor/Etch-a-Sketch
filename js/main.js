@@ -861,6 +861,22 @@ window.addEventListener("load", () => {
   // Create the grid
   CreateGrid();
 
+  /* ------------------------------------------------------------------------- */
+  /*                                    ZOOM                                   */
+  /* ------------------------------------------------------------------------- */
+
+  const panzoom = Panzoom(grid, {
+    disablePan: true,
+    cursor: "crosshair",
+    contain: "outside",
+    panOnlyWhenZoomed: true,
+    minScale: 1,
+    maxScale: 10,
+    pinchAndPan: true,
+  });
+
+  grid.parentElement.addEventListener("wheel", panzoom.zoomWithWheel);
+
   grid.addEventListener("pointerdown", (event) => {
     isMouseDown = true;
     handleUserAction(event);

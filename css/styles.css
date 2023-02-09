@@ -48,7 +48,7 @@
   /* --btn-size: 3rem; */
 
   --grid-size: 35vw;
-  --grid-padding: 0;
+  --grid-padding: var(--spacing-medium);
   --clr-picker-container-size: 4rem;
 }
 
@@ -438,6 +438,12 @@ hr {
   justify-content: center;
 }
 
+.grid-inner-container {
+  border: var(--grid-padding) solid transparent;
+  overflow: hidden;
+  border-radius: var(--border-radius-medium);
+}
+
 #grid {
   display: flex;
   flex-wrap: wrap;
@@ -446,8 +452,8 @@ hr {
   aspect-ratio: 1/1;
   background-color: white;
   cursor: crosshair;
-  margin: var(--spacing-medium);
-  padding: var(--grid-padding);
+  /* margin: var(--spacing-medium);
+  padding: var(--grid-padding); */
   user-select: none;
   touch-action: none;
 }
