@@ -141,7 +141,9 @@ const handleGridResize = (value) => {
 const handleUserAction = (event) => {
   // Save current state on first "pointerdown" event before performing actions.
   if (event.type === "pointerdown") {
-    saveState();
+    if (event.buttons !== 4 && getActiveTool() != "picker") {
+      saveState();
+    }
 
     // on pointerdown, set the lastCell to null so that each time the user clicks on
     // the same cell, it can be modified
