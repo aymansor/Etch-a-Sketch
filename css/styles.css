@@ -626,12 +626,12 @@ hr {
   align-items: center;
 }
 
-input[type="radio"] {
+#tools input[type="radio"] {
   opacity: 0;
   position: absolute;
 }
 
-input[type="radio"] + span {
+#tools input[type="radio"] + span {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -647,7 +647,7 @@ input[type="radio"] + span {
   transition: all 175ms cubic-bezier(0, 0, 1, 1);
 }
 
-input[type="radio"] + span::before {
+#tools input[type="radio"] + span::before {
   content: "";
   position: absolute;
   width: 100%;
@@ -662,33 +662,33 @@ input[type="radio"] + span::before {
   transition: all 175ms cubic-bezier(0, 0, 1, 1);
 }
 
-input[type="radio"] + span:hover {
+#tools input[type="radio"] + span:hover {
   border: 2px solid hsl(var(--clr-accent));
   color: hsl(var(--clr-neutral));
   background: hsl(var(--clr-primary));
 }
 
-input[type="radio"] + span:hover::before {
+#tools input[type="radio"] + span:hover::before {
   transform: translate3d(0, 0.65em, -1em);
 }
 
-input[type="radio"] + span:active {
+#tools input[type="radio"] + span:active {
   transform: translate(0em, 0.65em);
 }
 
-input[type="radio"] + span:active::before {
+#tools input[type="radio"] + span:active::before {
   transform: translate3d(0, 0, -1em);
   box-shadow: 0 0 0 2px hsl(var(--clr-primary)),
     0 0.25em 0 0 hsl(var(--clr-primary));
 }
 
-input[type="radio"]:checked + span {
+#tools input[type="radio"]:checked + span {
   color: hsl(var(--clr-neutral));
   background-color: hsl(var(--clr-primary));
   box-shadow: 0 2px 0 1px hsl(var(--clr-accent));
 }
 
-input[type="radio"]:checked + span::before {
+#tools input[type="radio"]:checked + span::before {
   /* Controls the radio bottom part when the radio is checked */
   /* transform: translate3d(0, 0.45em, -1em); */
 }
@@ -798,6 +798,84 @@ input[type="range"]::-moz-range-track {
   text-align: center;
   letter-spacing: var(--spacing-small);
   border-radius: 0 var(--border-radius-medium) var(--border-radius-medium) 0;
+}
+
+/* ------------------------------------------------------------------------- */
+/*                                 BRUSH SIZE                                */
+/* ------------------------------------------------------------------------- */
+
+.brush-size-outer-container {
+  position: relative;
+}
+
+.brush-size-container {
+  position: absolute;
+  bottom: 150%;
+  right: 75%;
+  transform: translate(0, -10%);
+  padding: var(--spacing-small);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  display: none;
+}
+
+.brush-size-container.active {
+  display: flex;
+}
+
+.brush-size {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: var(--spacing-small);
+  cursor: pointer;
+  border: 2px solid hsl(var(--clr-primary));
+}
+
+.brush-size input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.brush-size-label {
+  background-color: hsl(var(--clr-accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brush-size-label.very-large {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.brush-size-label.large {
+  width: 2rem;
+  height: 2rem;
+}
+
+.brush-size-label.medium {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.brush-size-label.small {
+  width: 1rem;
+  height: 1rem;
+}
+
+.brush-size:hover input ~ .brush-size-label {
+  background-color: hsl(var(--clr-primary));
+  border: 2px solid hsl(var(--clr-accent));
+}
+
+.brush-size input:checked ~ .brush-size-label {
+  background-color: hsl(var(--clr-primary));
+  border: 2px solid hsl(var(--clr-accent));
 }
 
 /* =================================================== */

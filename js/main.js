@@ -54,6 +54,11 @@ let lastCell = null;
  */
 let isMouseDown = false;
 
+/**
+ * @type {Number}
+ */
+let brushSize = 0;
+
 /* ------------------------------------------------------------------------- */
 /*                                 Grid Logic                                */
 /* ------------------------------------------------------------------------- */
@@ -143,11 +148,6 @@ const handleUserAction = (event) => {
     lastCell = null;
   }
 
-  // if the lastCell is the same as the target just return and do nothing
-  if (lastCell === event.target) return;
-
-  lastCell = event.target;
-
   if (event.pointerType === "mouse") {
     handleMouseActions(event);
   } else if (event.pointerType === "touch") {
@@ -167,6 +167,11 @@ const handleMouseActions = (event) => {
   if (targetCell === null || !targetCell.classList.contains("grid-square")) {
     return;
   }
+
+  // if the lastCell is the same as the target just return and do nothing
+  if (lastCell === event.target) return;
+
+  lastCell = event.target;
 
   // Delegate event handling to the relevant tool function.
   switch (event.buttons) {
@@ -239,12 +244,37 @@ const handleToolsActions = (target) => {
 
 /* ------------------------------ Handle tools ----------------------------- */
 
+const handleBrushSize = (target, color) => {
+  let [i, j] = getTargetIndex(target);
+
+  const size = brushSize;
+  const rows = gridSize;
+  const cols = gridSize;
+
+  // Loop through all cells around the cell of the given index (i,j) of interest
+  for (let x = i - size; x <= i + size; x++) {
+    for (let y = j - size; y <= j + size; y++) {
+      // Check if the indices are valid, within the bounds of the matrix
+      if (x >= 0 && x < rows && y >= 0 && y < cols) {
+        // Check if the cell is not the same as the cell of interest
+        if (x !== i || y !== j) {
+          gridMatrix[x][y].style.backgroundColor = color;
+        }
+      }
+    }
+  }
+};
+
 /**
  * Changes the background color of the targeted cell to the current primary color.
  * @param {HTMLElement} target - The targeted cell to change color
  */
 const handlePenTool = (target) => {
   target.style.backgroundColor = primaryColor;
+
+  if (brushSize >= 1) {
+    handleBrushSize(target, primaryColor);
+  }
 };
 
 /**
@@ -253,6 +283,10 @@ const handlePenTool = (target) => {
  */
 const handleEraserTool = (target) => {
   target.style.backgroundColor = gridBackgroundColor;
+
+  if (brushSize >= 1) {
+    handleBrushSize(target, gridBackgroundColor);
+  }
 };
 
 /**
@@ -272,6 +306,10 @@ const handleColorPickerTool = (target) => {
  */
 const handleRainbowTool = (target) => {
   target.style.backgroundColor = getRandomColor();
+
+  if (brushSize >= 1) {
+    handleBrushSize(target, getRandomColor());
+  }
 };
 
 /**
@@ -304,7 +342,8 @@ const handleLightenDarkenTool = (target, operation, percentage) => {
   // Increase or decrease the lightness by the specified percentage
   l = Math.min(100, Math.max(0, l + percentage));
 
-  target.style.backgroundColor = "hsl(" + h + "," + s + "%," + l + "%)";
+  const color = "hsl(" + h + "," + s + "%," + l + "%)";
+  target.style.backgroundColor = color;
 };
 
 /* ------------------------------ Tools Utils ------------------------------ */
@@ -320,6 +359,11 @@ const forEachCell = (callback) => {
       callback(cell);
     });
   });
+};
+
+const getTargetIndex = (target) => {
+  const str = target.dataset.index;
+  return str.split("x").map((index) => parseInt(index));
 };
 
 /**
@@ -702,6 +746,19 @@ const handleSwatchRightArrow = () => {
 };
 
 /* ------------------------------------------------------------------------- */
+/*                                 BRUSH SIZE                                */
+/* ------------------------------------------------------------------------- */
+
+const brushSizeInputs = document.getElementsByName("brush-size-input");
+const changeBrushSize = document.querySelector("#change-brush-size");
+const brushSizeContainer = document.querySelector(".brush-size-container");
+
+const getActiveBrushSize = () => {
+  const activeSize = [...brushSizeInputs].find((size) => size.checked);
+  return activeSize ? activeSize.value : undefined;
+};
+
+/* ------------------------------------------------------------------------- */
 /*                               SETTINGS POPUP                              */
 /* ------------------------------------------------------------------------- */
 
@@ -771,6 +828,25 @@ performRedoBtn.addEventListener("click", performRedo);
 document.addEventListener("keydown", handleKeydown);
 /* ------------------------------- Save Image ------------------------------ */
 saveBtn.addEventListener("click", saveImage);
+/* ------------------------------- Brush Size ------------------------------ */
+changeBrushSize.addEventListener("click", () => {
+  brushSizeContainer.classList.toggle("active");
+  window.addEventListener(
+    "click",
+    () => {
+      if (brushSizeContainer.classList.contains("active")) {
+        brushSizeContainer.classList.remove("active");
+      }
+    },
+    true
+  );
+});
+
+brushSizeInputs.forEach((button) => {
+  button.addEventListener("change", (event) => {
+    brushSize = Number(event.target.value - 1);
+  });
+});
 /* -------------------------------- settings ------------------------------- */
 toggleSettingsBtn.addEventListener("click", toggleSettingPopup);
 /* -------------------------------- On load -------------------------------- */
