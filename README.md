@@ -41,6 +41,9 @@
 - Adjustable grid size
 - Responsive design
 - Touch support
+- Lighten/Darken tools
+- Zoom feature for the grid
+- Brush size customization
 
 ## How To Use
 
@@ -64,10 +67,7 @@ $ .\index.html
 ```
 
 ## Todo
-- [ ] Lighten/Darken tools
-- [ ] Zoom feature for the grid
 - [ ] Mirror tool
-- [ ] Brush size customization
 - [ ] Brush opacity adjustment
 - [ ] Share to social media platforms
 - [ ] Change background color
