@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Dosis:wght@200;400;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Niconne&display=swap");
 /* =================================================== */
 /* VARIABLES */
@@ -7,17 +6,12 @@
 
 :root {
   font-size: 18px;
+
   /* Colors */
-  /* 60% */
   --clr-neutral: 49, 19%, 88%;
-  /* 30% */
   --clr-primary: 0, 4%, 30%;
-  /* 10% */
   --clr-accent: 31, 33%, 73%;
-
   --clr-btn: var(--clr-primary);
-
-  /* TODO: add outline color, maybe? */
 
   /* Font Family */
   --ff-primary: "Dosis", sans-serif;
@@ -253,8 +247,7 @@ footer,
 .inner-depth {
   border-radius: var(--border-radius-medium);
   border: 4px solid hsl(var(--clr-accent));
-  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.35) inset,
-    0 0 0 2px hsl(var(--clr-primary));
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.35) inset, 0 0 0 2px hsl(var(--clr-primary));
   background-color: hsl(var(--clr-neutral));
 }
 
@@ -348,8 +341,7 @@ hr {
   transform: translateX(calc(var(--spacing-medium) * 1.5));
   -webkit-transform: translateX(calc(var(--spacing-medium) * 1.5));
   -moz-transform: translate(calc(var(--spacing-medium) * 1.5), 60%);
-  transition: all 0.2s cubic-bezier(1.6, 0.8, 0.6, 2.5),
-    background-color 0.15s ease;
+  transition: all 0.2s cubic-bezier(1.6, 0.8, 0.6, 2.5), background-color 0.15s ease;
   box-shadow: 0 0 0 2px hsl(var(--clr-neutral)), 0 6px 16px rgba(0, 0, 0, 0.35);
 }
 .checkbox .checkbox-input:checked + .toggle span:before {
@@ -410,8 +402,7 @@ hr {
 
 .btn:active::before {
   transform: translate3d(0, 0, -1em);
-  box-shadow: 0 0 0 2px hsl(var(--clr-primary)),
-    0 0.25em 0 0 hsl(var(--clr-primary));
+  box-shadow: 0 0 0 2px hsl(var(--clr-primary)), 0 0.25em 0 0 hsl(var(--clr-primary));
 }
 
 #perform-undo-btn,
@@ -511,8 +502,7 @@ hr {
   width: 100%;
   border-radius: var(--border-radius-small);
   border: 4px solid hsl(var(--clr-accent));
-  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.35) inset,
-    0 0 0 2px hsl(var(--clr-primary));
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.35) inset, 0 0 0 2px hsl(var(--clr-primary));
   background-color: hsl(var(--clr-primary));
   overflow: hidden;
 }
@@ -684,8 +674,7 @@ hr {
 
 #tools input[type="radio"] + span:active::before {
   transform: translate3d(0, 0, -1em);
-  box-shadow: 0 0 0 2px hsl(var(--clr-primary)),
-    0 0.25em 0 0 hsl(var(--clr-primary));
+  box-shadow: 0 0 0 2px hsl(var(--clr-primary)), 0 0.25em 0 0 hsl(var(--clr-primary));
 }
 
 #tools input[type="radio"]:checked + span {
@@ -754,8 +743,7 @@ input[type="range"]::-webkit-slider-thumb {
   background-color: hsl(var(--clr-accent));
   cursor: pointer;
   border: 2px solid hsl(var(--clr-primary));
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.35),
-    0 0 10px -2px rgba(0, 0, 0, 0.35) inset;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.35), 0 0 10px -2px rgba(0, 0, 0, 0.35) inset;
   transform: translateY(-25%);
 }
 
